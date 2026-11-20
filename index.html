@@ -483,7 +483,7 @@ function rowH(s,i,lo,hi){
   '<div style="font-size:.76rem;opacity:.8;margin-top:2px"><b style="color:var(--b)">Sarbagita · S1B</b> · Arah: '+arahNama+(statusBadge?' · <i>'+statusBadge+'</i>':'')+'</div>';
  if(i===st.sel)h+='<div class="det">'+nbLine(st.dir,i)+
   '<div style="margin:5px 0 8px 0;font-size:.78rem"><span style="display:inline-block;padding:2px 7px;border-radius:6px;font-size:.72rem;font-weight:700;color:#fff;background:#0284c7">Sarbagita · S1B</span> <span>Koordinat halte: ('+s[1].toFixed(5)+', '+s[2].toFixed(5)+')</span></div>'+
-  '<a href="peta?d='+st.dir+'&amp;s='+i+'&amp;nav=1"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a>'+
+  '<a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination='+s[1]+','+s[2]+'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a>'+
   '<a class="alt" target="_blank" rel="noopener" href="'+gm(s)+'"><svg class="ic" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg> Buka di Google Maps</a></div>';
  return h+'</div>'}
 function homeList(){var c=$("allc");if(c)c.textContent="("+D[st.cor][st.dir].length+")"}
@@ -511,7 +511,15 @@ function stops(){var L=D[st.cor][st.dir],r=st.rg,lo=r?r[0]:0,hi=r?r[1]:L.length-
 function pick(i){if(st.view==="home"){st.sel=i;st.rg=null;show("stops");focusStopMap(i);var e0=document.querySelector("#ls .stop.sel");if(e0&&e0.scrollIntoView)e0.scrollIntoView({block:"center"});return}
  st.sel=st.sel===i?-1:i;var h=false;stops();if(st.sel>=0)focusStopMap(st.sel);var e=document.querySelector((h?"#ls1":"#ls")+" .stop.sel");if(e&&e.scrollIntoView)e.scrollIntoView({block:"nearest",behavior:"smooth"})}
 function show(v){st.view=v;setTimeout(function(){window.abTop&&abTop()},0);["home","stops","info"].forEach(function(x){$("v-"+x).className="view"+(x===v?" on":"")});
- document.querySelectorAll("#nav button").forEach(function(b){b.className=b.dataset.v===v?"on":""});window.scrollTo(0,0);if(v==="stops")stops();if(v==="home")home()}
+ document.querySelectorAll("#nav button").forEach(function(b){b.className=b.dataset.v===v?"on":""});window.scrollTo(0,0);
+ var currentLocation=readSessionLocation();if(currentLocation)st.nr=[currentLocation.lat,currentLocation.lng];
+ if(v==="stops"){
+  var saved=readSessionLocation(),closest=null;
+  if(saved){st.nr=[saved.lat,saved.lng];if(!st.rg){closest=nearestStop(saved.lat,saved.lng,st.cor);if(closest){st.dir=closest.dir;st.sel=D[st.cor][st.dir].indexOf(closest.stop)}}}
+  stops();
+  if(closest&&st.sel>=0){focusStopMap(st.sel);var nearbyRow=document.querySelector("#ls .stop.sel");if(nearbyRow)setTimeout(function(){nearbyRow.scrollIntoView({block:"center",behavior:"smooth"})},100)}
+ }
+ if(v==="home"){home();if(st.nr)nearCard()}}
 $("ls").onclick=function(e){if(e.target.tagName==="A")return;var s=e.target.closest(".stop");if(s)pick(+s.dataset.i)};
 document.querySelectorAll("#nav button").forEach(function(b){b.onclick=function(){st.rg=null;if(b.dataset.v==="stops")st.sel=-1;show(b.dataset.v)}});
 $("all").onclick=function(){st.rg=null;st.sel=-1;show("stops")};
@@ -522,14 +530,24 @@ function glowF(el){var f=el.closest(".f");if(!f)return;f.classList.remove("glow"
 /* Daftar halte bisa dipakai dengan keyboard (Enter / Spasi) */
 $("ls").onkeydown=function(e){if(e.key!=="Enter"&&e.key!==" ")return;var s=e.target.closest&&e.target.closest(".stop");if(!s||e.target!==s)return;e.preventDefault();var i=+s.dataset.i;pick(i);var n=this.querySelector('.stop[data-i="'+i+'"]');if(n)n.focus({preventScroll:true})};$("q").oninput=stops;
 $("sw").onclick=function(){locNote("");var a=$("sf").value;$("sf").value=$("st").value;$("st").value=a;this.classList.toggle("r");routeMessage("","");st.hd=null;st.dt=1;nextBus();glowF($("sf"));glowF($("st"))};
-$("sf").onchange=function(){locNote("");st.hd=null;if($("msg").className==="ok")routeMessage("","");if(typeof SJ!=="undefined")nextBus()};
+$("sf").onchange=function(){locNote("");st.hd=null;var saved=readSessionLocation();if(saved){saved.originAuto=false;saved.originStop=$("sf").value;writeSessionLocation(saved)}if($("msg").className==="ok")routeMessage("","");if(typeof SJ!=="undefined")nextBus()};
+var SESSION_LOCATION_KEY="sarbagita-user-location-v1",SESSION_LOCATION_TTL=6*60*60*1000;
+function writeSessionLocation(d){var raw=JSON.stringify(d);try{localStorage.setItem(SESSION_LOCATION_KEY,raw)}catch(e){}try{sessionStorage.setItem(SESSION_LOCATION_KEY,raw)}catch(e){}}
+function removeSessionLocation(){try{localStorage.removeItem(SESSION_LOCATION_KEY);localStorage.removeItem("sarbagita-user-lat");localStorage.removeItem("sarbagita-user-lng");localStorage.removeItem("sarbagita-user-time")}catch(e){}try{sessionStorage.removeItem(SESSION_LOCATION_KEY)}catch(e){}}
+function readSessionLocation(){var raw=null;try{raw=localStorage.getItem(SESSION_LOCATION_KEY)}catch(e){}if(!raw)try{raw=sessionStorage.getItem(SESSION_LOCATION_KEY)}catch(e){}
+ if(!raw){try{var oldLat=localStorage.getItem("sarbagita-user-lat"),oldLng=localStorage.getItem("sarbagita-user-lng"),oldAt=localStorage.getItem("sarbagita-user-time"),la=Number(oldLat),lo=Number(oldLng),at=Number(oldAt);if(oldLat!==null&&oldLng!==null&&oldAt!==null&&Number.isFinite(la)&&Number.isFinite(lo)&&Number.isFinite(at))raw=JSON.stringify({lat:la,lng:lo,savedAt:at,originStop:"",originAuto:true})}catch(e){}}
+ if(!raw)return null;try{var d=JSON.parse(raw);if(!d||!Number.isFinite(+d.lat)||!Number.isFinite(+d.lng)||+d.lat < -90||+d.lat > 90||+d.lng < -180||+d.lng > 180||!Number.isFinite(+d.savedAt)||Date.now()-Number(d.savedAt)>SESSION_LOCATION_TTL||Date.now()<Number(d.savedAt)-60000){removeSessionLocation();return null}return d}catch(e){removeSessionLocation();return null}}
+function saveSessionLocation(lat,lng,originStop,originAuto){var old=readSessionLocation(),d={lat:Number(lat),lng:Number(lng),savedAt:Date.now(),originStop:originStop||(old&&old.originStop)||"",originAuto:typeof originAuto==="boolean"?originAuto:!!(old&&old.originAuto)};writeSessionLocation(d);st.nr=[d.lat,d.lng];syncLocationButton(false);return d}
+function clearSessionLocation(){removeSessionLocation();st.nr=null}
 function locNote(t){var n=$("sfn");n.hidden=!t;n.textContent=t||""}
-function locBusy(b){$("sf").closest(".f").classList.toggle("seek",b);var btn=$("useLocation");btn.disabled=b;btn.classList.toggle("busy",b);btn.querySelector("span").textContent=b?"Mencari lokasi…":"Pakai lokasi saya"}
+function syncLocationButton(busy){var btn=$("useLocation");if(!btn)return;var en=document.documentElement.lang==="en",saved=!!readSessionLocation();btn.disabled=!!busy;btn.classList.toggle("busy",!!busy);btn.querySelector("span").textContent=busy?(en?"Finding location…":"Mencari lokasi…"):saved?(en?"Refresh my location":"Perbarui lokasi saya"):(en?"Use my location":"Pakai lokasi saya")}
+function locBusy(b){$("sf").closest(".f").classList.toggle("seek",b);syncLocationButton(b)}
+function restoreSessionLocation(){var saved=readSessionLocation();if(!saved)return;st.nr=[saved.lat,saved.lng];var best=nearestStop(saved.lat,saved.lng,st.cor),en=document.documentElement.lang==="en";if(best&&saved.originAuto){$("sf").value=best.stop[0];st.hd=best.dir;saved.originStop=best.stop[0];writeSessionLocation(saved);locNote(en?"📍 Nearest stop from your location · "+distanceText(best.km):"📍 Halte terdekat dari lokasi Anda · "+distanceText(best.km))}else{if(saved.originStop&&names(st.cor).indexOf(saved.originStop)>=0)$("sf").value=saved.originStop;locNote("")}nearCard();syncLocationButton(false);nextBus()}
 $("useLocation").onclick=function(){locBusy(true);routeMessage("loading","Mencari lokasi dan halte terdekat…");
  if(!navigator.geolocation){locBusy(false);routeMessage("","Browser ini tidak mendukung akses lokasi. Pilih halte asal secara manual.");return}
  try{navigator.geolocation.getCurrentPosition(function(pos){var best=nearestStop(pos.coords.latitude,pos.coords.longitude,st.cor);locBusy(false);
   if(!best){routeMessage("","Belum ada data koordinat halte untuk koridor ini.");return}
-  $("sf").value=best.stop[0];st.hd=best.dir;nextBus();glowF($("sf"));locNote("📍 Terdekat dari lokasi Anda · "+distanceText(best.km));st.nr=[pos.coords.latitude,pos.coords.longitude];try{localStorage.setItem("sarbagita-user-lat",pos.coords.latitude);localStorage.setItem("sarbagita-user-lng",pos.coords.longitude);localStorage.setItem("sarbagita-user-time",Date.now())}catch(e){}nearCard();routeMessage("ok","Halte terdekat ditemukan di bawah. Pilih tujuan jika ingin melihat rute.");var nc=$("near");if(nc.scrollIntoView)setTimeout(function(){nc.scrollIntoView({block:"nearest",behavior:"smooth"})},150);
+  $("sf").value=best.stop[0];st.hd=best.dir;saveSessionLocation(pos.coords.latitude,pos.coords.longitude,best.stop[0],true);syncLocationButton(false);nextBus();glowF($("sf"));locNote(document.documentElement.lang==="en"?"📍 Nearest stop from your location · "+distanceText(best.km):"📍 Halte terdekat dari lokasi Anda · "+distanceText(best.km));nearCard();routeMessage("ok","Halte terdekat ditemukan di bawah. Pilih tujuan jika ingin melihat rute.");var nc=$("near");if(nc.scrollIntoView) setTimeout(function(){nc.scrollIntoView({block:"nearest",behavior:window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"})},150);
  },function(err){locBusy(false);var msg=err&&err.code===1?"Izin lokasi ditolak. Izinkan akses lokasi di browser, atau pilih halte asal secara manual.":err&&err.code===3?"Pencarian lokasi melewati batas waktu. Coba lagi atau pilih halte asal.":"Lokasi tidak tersedia. Coba lagi atau pilih halte asal.";routeMessage("",msg)},{enableHighAccuracy:true,timeout:15000,maximumAge:60000})}
  catch(e){locBusy(false);routeMessage("","Lokasi tidak dapat digunakan. Pilih halte asal secara manual.")}};
 
@@ -537,12 +555,15 @@ $("go").onclick=function(){var f=$("sf").value,t=$("st").value,m=$("msg");st.dt=
  if(f===t){routeMessage("","Pilih halte tujuan yang berbeda dari halte asal.");return}
  var ds=["a","b"];for(var k=0;k<2;k++){var a=near(st.cor,ds[k],f),b=near(st.cor,ds[k],t);if(a>=0&&b>a){st.dir=ds[k];st.rg=[a,b];st.sel=-1;routeMessage("","");show("stops");return}}
  routeMessage("","Tidak ada rute langsung dari "+f+" ke "+t+" di "+CN[st.cor]+(D.c2?". Coba tukar tujuan atau pilih koridor lain.":". Coba tukar asal dan tujuan."))};
-$("nb").onclick=function(){var m=$("nm");m.textContent="Mencari lokasi...";
- try{navigator.geolocation.getCurrentPosition(function(g){var L=D[st.cor][st.dir],best=-1,bd=1e9,la=g.coords.latitude,lo=g.coords.longitude;
+function showNearestStopFromCoords(la,lo){var m=$("nm"),L=D[st.cor][st.dir],best=-1,bd=1e9;
   L.forEach(function(s,i){if(!s[1])return;var dx=(s[2]-lo)*111.3*Math.cos(la*Math.PI/180),dy=(s[1]-la)*111.3,d=Math.sqrt(dx*dx+dy*dy);if(d<bd){bd=d;best=i}});
-  if(best<0){m.textContent="Tidak ada halte berkoordinat.";return}
-  m.textContent=bd>40?"Anda cukup jauh dari rute ini ("+Math.round(bd)+" km).":"Terdekat: "+L[best][0]+", "+(bd<1?Math.round(bd*1000)+" m":bd.toFixed(1)+" km");
-  pick(best)},function(){m.textContent="Izin lokasi tidak tersedia. Ketuk halte di daftar untuk melihat jam bus berikutnya."},{timeout:10000})}catch(e){m.textContent="Lokasi tidak didukung."}};
+ if(best<0){m.textContent="Tidak ada halte berkoordinat.";return}
+ st.nr=[la,lo];m.textContent=bd>40?"Anda cukup jauh dari rute ini ("+Math.round(bd)+" km).":"Terdekat: "+L[best][0]+", "+(bd<1?Math.round(bd*1000)+" m":bd.toFixed(1)+" km");
+ st.sel=best;st.rg=null;stops();nearCard();focusStopMap(best);var row=document.querySelector('#ls .stop[data-i="'+best+'"]');if(row)row.scrollIntoView({block:"center",behavior:"smooth"})}
+$("nb").onclick=function(){var m=$("nm"),saved=readSessionLocation();m.textContent="Mencari halte terdekat…";
+ if(saved){st.nr=[saved.lat,saved.lng];showNearestStopFromCoords(saved.lat,saved.lng);return}
+ if(!navigator.geolocation){m.textContent="Lokasi tidak didukung.";return}
+ try{navigator.geolocation.getCurrentPosition(function(g){saveSessionLocation(g.coords.latitude,g.coords.longitude,"",false);showNearestStopFromCoords(g.coords.latitude,g.coords.longitude)},function(){m.textContent="Izin lokasi tidak tersedia. Ketuk halte di daftar untuk melihat jam bus berikutnya."},{timeout:10000})}catch(e){m.textContent="Lokasi tidak didukung."}};
 function tcol(){var dk=document.documentElement.getAttribute("data-theme")==="dark",neon=window.SGT_THEME_CONFIG.visualPreset==="vice-city",m=document.querySelector('meta[name="theme-color"]'),f32=$("favicon32"),f192=$("favicon192");if(m)m.content=neon?"#21103f":(dk?"#0b1220":"#0a78e6");if(f32)f32.href=neon?"icons/neon-icon-32.png":"icons/icon-32.png?v=2";if(f192)f192.href=neon?"icons/neon-icon-192.png":"icons/icon-192.png?v=2"}tcol();
 var VICE_CITY_ENABLED=window.SGT_THEME_CONFIG.visualPreset==="vice-city",classicDay=document.querySelector(".hero-photo-day"),classicNight=document.querySelector(".hero-photo-night");
 function heroPresetSrc(image,preset){if(!image)return"";return preset==="vice-city"?image.dataset.viceCitySrc:image.dataset.classicSrc}
@@ -647,10 +668,10 @@ function nearCard(){var c=$("near");if(!st.nr||typeof SJ==="undefined"){c.hidden
   L.forEach(function(s,i){if(!s[1]||i===L.length-1)return;var km=distanceKm(la,lo,s[1],s[2]);if(km<bk){bk=km;best=i}});
   if(best<0)return;far=Math.min(far,bk);var s=L[best];
   h+='<div class="nri"><div class="nrt"><span class="nrd">Arah '+(d==="a"?"GWK":"Kota")+'</span><b>'+s[0]+'</b> <small>· '+distanceText(bk)+'</small></div>'+nbLine(d,best)
-   +'<div class="nra"><a href="peta?c=c1&amp;d='+d+'&amp;s='+best+'&amp;nav=1"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a><a class="alt" href="peta?c=c1&amp;d='+d+'&amp;s='+best+'"><svg class="ic" viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg> Lihat di peta</a></div></div>'});
+   +'<div class="nra"><a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination='+s[1]+','+s[2]+'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a><a class="alt" href="peta?c=c1&amp;d='+d+'&amp;s='+best+'"><svg class="ic" viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg> Lihat di peta</a></div></div>'});
  if(far>5)h+='<div class="nrn">Anda cukup jauh dari rute ini ('+distanceText(far)+').</div>';
  h+='<div class="nrn">Mau ke halte tertentu? Pilih tujuan di atas, lalu tekan Lihat rute.</div>';
- c.innerHTML=h;c.hidden=false;c.querySelector(".nrx").onclick=function(){st.nr=null;c.hidden=true}}
+ c.innerHTML=h;c.hidden=false;c.querySelector(".nrx").onclick=function(){clearSessionLocation();locNote("");syncLocationButton(false);c.hidden=true}}
 function mt(x){x=((Math.round(x)%1440)+1440)%1440;var h=Math.floor(x/60),n=x%60;return (h<10?"0":"")+h+":"+(n<10?"0":"")+n}
 /* Halte & arah untuk kartu: dari rute asal-tujuan (hanya jika tujuan sudah dipilih pengguna),
    lalu arah hasil lokasi, lalu arah tempat halte itu bukan halte terakhir */
@@ -682,7 +703,7 @@ function nextBus(){
  document.querySelectorAll(".stop.sel .nbl").forEach(function(e){var t=document.createElement("div");t.innerHTML=nbLine(st.dir,st.sel);if(t.firstChild)e.replaceWith(t.firstChild)});
  document.querySelectorAll(".sjl").forEach(function(a){a.onclick=function(e){e.preventDefault();show("info");$("sjd").open=true;$("sj").scrollIntoView({behavior:"smooth"})}})}
 $("nxib").onclick=function(){var c=$("nxt"),o=!c.classList.contains("tip");c.classList.toggle("tip",o);this.setAttribute("aria-expanded",o)};
-nextBus();setInterval(nextBus,30000);
+nextBus();restoreSessionLocation();setInterval(nextBus,30000);
 /* === Cuaca saat ini di sekitar halte asal (Open-Meteo, tanpa kunci API).
    Yang dikirim hanya koordinat HALTE (dibulatkan), bukan lokasi pengguna. === */
 (function(){
@@ -993,8 +1014,9 @@ if(pref==="en")set(true);
       if (syncServiceHours()) return;
       if (!json || !Array.isArray(json.data)) throw new Error("Invalid GPS response");
       var live = json.data.filter(function(b) {
+        if(!b || String(b.pref)!=="14" || b.lat==null || b.lng==null || String(b.lat).trim()==="" || String(b.lng).trim()==="") return false;
         var lat=Number(b.lat),lng=Number(b.lng);
-        return b.pref === "14" && Number.isFinite(lat) && Number.isFinite(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+        return Number.isFinite(lat) && Number.isFinite(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
       }).map(function(b) {
         var angle=b.angle==null||b.angle===""?null:Number(b.angle),speed=Number(b.speed);
         return {id:b.id,lat:Number(b.lat),lng:Number(b.lng),angle:Number.isFinite(angle)?angle:null,speed:Number.isFinite(speed)?speed:0,toward:b.toward||"",plate:b.plate_number||b.name||"",updated:b.dt_tracker||""};

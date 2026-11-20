@@ -48,7 +48,7 @@
 <script>(function(){function w(){var n=new Date(Date.now()+288e5),m=n.getUTCHours()*60+n.getUTCMinutes(),k=m>=1110||m<360,d=m<360?new Date(n.getTime()-864e5):n;return{n:k,p:d.toISOString().slice(0,10)+(k?"N":"D")}}window.sgtTheme=function(){var x=w(),o=null;try{o=JSON.parse(sessionStorage.getItem("sarbagita-theme-v3")||"null")}catch(e){}return o&&o.p===x.p?o.t==="dark":x.n};window.sgtSave=function(dk){try{sessionStorage.setItem("sarbagita-theme-v3",JSON.stringify({t:dk?"dark":"light",p:w().p}))}catch(e){}};try{localStorage.removeItem("sarbagita-theme-v3");localStorage.removeItem("sarbagita-theme-v2")}catch(e){}if(sgtTheme())document.documentElement.setAttribute("data-theme","dark")})()</script>
 <script>(function(){var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=window.SGT_THEME_CONFIG.visualPreset==="vice-city"?"#21103f":(document.documentElement.getAttribute("data-theme")==="dark"?"#0b1220":"#0a78e6")})()</script>
 <style>
-:root{color-scheme:light;--sgt-id:"sgt-yg-fd69d51a";--b:#0a78e6;--b2:#0e9ccf;--bs:rgba(10,120,230,.11);--or:#ff7a1a;--tx:#0f172a;--mut:#4a5873;--ln:rgba(15,23,42,.09);--bg:#eef1f7;--card:rgba(255,255,255,.88);--soft:rgba(15,23,42,.06);--glass:rgba(255,255,255,.6);--gb:rgba(255,255,255,.8);--sh:0 1px 2px rgba(15,23,42,.05),0 16px 44px -12px rgba(15,23,42,.3)}
+:root{color-scheme:light;--sgt-id:"sgt-yg-fd69d51a";--sheet-min-content:156px;--b:#0a78e6;--b2:#0e9ccf;--bs:rgba(10,120,230,.11);--or:#ff7a1a;--tx:#0f172a;--mut:#4a5873;--ln:rgba(15,23,42,.09);--bg:#eef1f7;--card:rgba(255,255,255,.88);--soft:rgba(15,23,42,.06);--glass:rgba(255,255,255,.6);--gb:rgba(255,255,255,.8);--sh:0 1px 2px rgba(15,23,42,.05),0 16px 44px -12px rgba(15,23,42,.3)}
 :root[data-theme="dark"]{color-scheme:dark;--b:#3b82f6;--b2:#22c1d6;--bs:rgba(59,130,246,.16);--or:#fb923c;--tx:#f1f5f9;--mut:#aab6ca;--ln:rgba(226,232,240,.13);--bg:#0b1220;--card:rgba(20,31,51,.92);--soft:rgba(255,255,255,.07);--glass:rgba(15,23,42,.78);--gb:rgba(255,255,255,.13);--sh:0 1px 2px rgba(0,0,0,.44),0 16px 44px -12px rgba(0,0,0,.7)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;margin:0}
@@ -102,6 +102,7 @@ button,input{font:inherit;color:inherit}
 .busn{display:flex;gap:10px;align-items:flex-start;margin:2px 4px 8px;padding:10px 12px;border-radius:12px;background:rgba(34,197,94,.12);font-size:.78rem;line-height:1.45;color:var(--tx)}.busn small{color:var(--mut);font-size:.7rem}
 .busn .bi,.bus{flex:none;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,#16a34a,#22c55e)}
 .busn .bi{width:26px;height:26px;border-radius:8px}
+#busnMobile{display:none}
 .bus{width:34px;height:34px;border-radius:11px;border:2.5px solid #fff;box-shadow:0 6px 16px -4px rgba(22,163,74,.75)}
 .busn svg,.bus svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .empty{padding:28px 12px;text-align:center;color:var(--mut);font-size:.88rem}
@@ -155,31 +156,6 @@ button,input{font:inherit;color:inherit}
 .leaflet-popup-content .bus-pop-name,.leaflet-popup-content .bus-pop-live{color:#16a34a!important}
 .leaflet-popup-content .bus-pop-name{font-size:.72rem;font-weight:700;margin-bottom:4px}
 .leaflet-popup-content .bus-pop-detail{font-size:.78rem;color:var(--tx)!important;margin-bottom:2px}
-/* Route section inside Stop Marker Popup Card */
-.pop-route-box{margin-top:10px;padding:9px 11px;border-radius:12px;background:var(--soft);border:1px solid var(--ln);display:flex;flex-direction:column;gap:6px}
-.pop-route-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.pop-route-stat{display:flex;align-items:baseline;gap:5px;min-width:0}
-.pop-route-time{font-size:.92rem;font-weight:800;color:var(--b)}
-.pop-route-dist{font-size:.76rem;font-weight:600;color:var(--mut)}
-.pop-mode-toggle{display:inline-flex;background:var(--card);border-radius:8px;padding:2px;gap:2px;border:1px solid var(--ln)}
-.pop-mode{border:none;border-radius:6px;padding:4px 7px;background:none;color:var(--mut);font-size:.7rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:3px;font-family:inherit;transition:all .15s}
-.pop-mode svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.pop-mode.on{background:var(--b);color:#fff;box-shadow:0 2px 6px -1px rgba(10,120,230,.5)}
-.pop-route-footer{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:.72rem;color:var(--mut);padding-top:2px}
-.pop-route-from{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
-.pop-clear-btn{border:none;background:none;color:var(--mut);font-size:.7rem;font-weight:600;cursor:pointer;padding:2px 4px;border-radius:4px;font-family:inherit}
-.pop-clear-btn:hover{color:#ef4444}
-.nav-pin-start{width:22px;height:22px;border-radius:50%;background:#10b981;color:#fff;font:800 10px/22px "Plus Jakarta Sans",sans-serif;text-align:center;border:2.5px solid #fff;box-shadow:0 3px 8px rgba(16,185,129,.5)}
-.mk.nav-dest{box-shadow:0 0 0 4px #10b981,0 6px 20px rgba(16,185,129,.5)!important;transform:scale(1.25)!important;z-index:9999!important}
-.leaflet-popup-content .gm{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 12px;border-radius:10px;background:var(--b);color:#fff!important;border:none;cursor:pointer;font-weight:600;font-size:.8rem;font-family:inherit;text-decoration:none;-webkit-appearance:none;appearance:none;transition:transform .15s,filter .15s}
-.leaflet-popup-content .gm:active{transform:scale(.96)}
-.leaflet-popup-content .gm:hover{filter:brightness(1.1)}
-.leaflet-popup-content a.gm.alt{background:var(--bs);color:var(--b)!important}
-
-:root[data-visual-preset="vice-city"] .pop-route-box{border-color:rgba(255,45,196,.4);box-shadow:0 0 15px rgba(255,45,196,.15)}
-:root[data-visual-preset="vice-city"] .pop-route-time{color:#00f0ff;text-shadow:0 0 8px rgba(0,240,255,.5)}
-:root[data-visual-preset="vice-city"] .pop-mode.on{background:linear-gradient(135deg,#ff2dc4,#7928ca);color:#fff;box-shadow:0 0 8px rgba(255,45,196,.5)}
-:root[data-visual-preset="vice-city"] .mk.nav-dest{box-shadow:0 0 0 4px #00f0ff,0 0 20px rgba(0,240,255,.8)!important}
 .leaflet-popup-content .bus-pop-detail b{display:inline;font-size:inherit;margin:0;color:inherit}
 .leaflet-popup-content .bus-pop-meta{font-size:.7rem;color:var(--mut)!important;margin-top:4px;border-top:1px solid var(--ln);padding-top:4px}
 :root[data-theme="dark"] .leaflet-popup-content .bus-pop,:root[data-theme="dark"] .leaflet-popup-content .bus-pop-head,:root[data-theme="dark"] .leaflet-popup-content .bus-pop-plate,:root[data-theme="dark"] .leaflet-popup-content .bus-pop-detail,:root[data-theme="dark"] .leaflet-popup-content .bus-pop-detail b{color:#f1f5f9!important}
@@ -190,7 +166,7 @@ button,input{font:inherit;color:inherit}
 .dleg-line{display:block;flex:none;width:20px;height:0;border-top:3px solid;border-radius:2px}
 .dleg-line.alt,.dleg-line.approx{border-top-style:dashed}
 .nbp{margin-top:8px;padding:7px 10px;border-radius:10px;background:var(--bs);font-size:.8rem;line-height:1.45}.nbp strong{color:var(--b);font-weight:800}
-.leaflet-popup-content a.gm.alt{background:var(--bs);color:var(--b)!important}.gm .ic{width:14px;height:14px}.gm{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 12px;border-radius:10px;background:var(--b);color:#fff!important;text-decoration:none;font-weight:600;font-size:.8rem}
+.leaflet-popup-content a.gm.alt{background:var(--bs);color:var(--b)!important}.gm .ic{width:14px;height:14px}.gm{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 12px;border-radius:10px;background:var(--b);color:#fff!important;text-decoration:none;font-weight:600;font-size:.8rem}.gm-compact{display:none}
 .leaflet-control-zoom{border:1px solid var(--ln)!important;border-radius:14px!important;overflow:hidden;box-shadow:var(--sh)!important}
 .leaflet-control-zoom a{width:40px!important;height:40px!important;line-height:40px!important;background:var(--glass)!important;color:var(--tx)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-color:var(--ln)!important}
 .leaflet-control-attribution{background:var(--glass)!important;color:var(--mut)!important;border-radius:8px 0 0 0}
@@ -204,26 +180,63 @@ button,input{font:inherit;color:inherit}
  #bar .seg{flex:1 1 100%}#bar .seg button{flex:1;padding:8px 6px}
  #nav{right:0;bottom:calc(10px + env(safe-area-inset-bottom,0px))}
  /* Panel menempel ke ujung bawah; toolbar mengambang di atasnya. Tinggi = isi yang terlihat + area toolbar (76px). */
- #side{left:0;right:0;width:auto;top:auto;bottom:0;height:calc(42% + 76px + env(safe-area-inset-bottom,0px));border-radius:24px 24px 0 0;border-bottom:0;transition:height .3s cubic-bezier(.2,.8,.2,1)}
- #side.min{height:calc(132px + 76px + env(safe-area-inset-bottom,0px))}#side.max{height:calc(78% + 8px + env(safe-area-inset-bottom,0px))}
- #ls{padding-bottom:calc(86px + env(safe-area-inset-bottom,0px))}
- #side.min #ls{visibility:hidden}
- .grab{display:block;width:100%;height:20px;border:0;background:none;cursor:grab;padding:8px 0 0}
- .grab::before{content:"";display:block;width:40px;height:5px;margin:0 auto;border-radius:9px;background:var(--mut);opacity:.4}
- .ph{padding-top:4px;cursor:grab;user-select:none;-webkit-user-select:none}
+ #side{left:0;right:0;width:auto;top:auto;bottom:0;height:calc(32% + 76px + env(safe-area-inset-bottom,0px));border-radius:24px 24px 0 0;border-bottom:0;transition:height .3s cubic-bezier(.2,.8,.2,1)}
+ #side.min{height:calc(var(--sheet-min-content,156px) + 76px + env(safe-area-inset-bottom,0px))}#side.max{height:calc(74% + 8px + env(safe-area-inset-bottom,0px))}
+ #ls{padding:6px 7px calc(86px + env(safe-area-inset-bottom,0px))}
+ #ls{transition:opacity .18s ease}
+ #side.min #ls{visibility:hidden;opacity:0;pointer-events:none}
+ #side>.grab{display:flex;align-items:center;justify-content:center;flex:none;width:100%;height:30px;padding:0;border:0;background:none;cursor:grab;touch-action:none}
+ #side>.grab::before{content:"";display:block;width:36px;height:5px;margin:0;border-radius:999px;background:var(--mut);opacity:.68;transition:transform .15s,opacity .15s}
+ #side>.grab:active::before{transform:scaleX(1.12);opacity:.9}
+ .ph{flex:none;padding:4px 12px 8px;cursor:grab;user-select:none;-webkit-user-select:none}
+ .ph #route,.ph .q{overflow:hidden;max-height:40px;opacity:1;transition:max-height .22s ease,opacity .16s ease,margin .22s ease}
+ #side.min .ph #route{max-height:0;margin:0;opacity:0;pointer-events:none}
+ .ph-t{margin-bottom:6px}
+ .ph-t b{font-size:.98rem}
+ #cnt{padding:3px 7px;font-size:.7rem}
+ #route{margin:-3px 0 7px;font-size:.74rem}
+ #route .route-line{gap:5px}
+ #q{padding:9px 10px 9px 36px;font-size:.84rem;border-radius:12px}
+ .q svg{left:11px;width:16px;height:16px;margin-top:-8px}
+ .it{padding:7px 8px 7px 40px;font-size:.82rem;border-radius:10px}
+ .it::before{left:18px}
+ .it .n{left:8px;width:20px;height:20px;margin-top:-10px;font-size:.62rem;border-width:1.5px}
+ .it small{margin-top:2px;padding:1px 6px;font-size:.62rem}
+ .it .nm>div{margin-top:1px!important;font-size:10px!important;line-height:1.3}
+ .busn{gap:8px;margin:1px 3px 6px;padding:8px 9px;font-size:.72rem;line-height:1.35}
+ .busn small{font-size:.66rem}
+ .busn .bi{width:22px;height:22px;border-radius:7px}
+ .srcn{margin:8px 4px 3px;padding:8px 9px;font-size:.68rem;line-height:1.4}
  /* Panel bawah dibuat lebih padat agar warnanya sama dengan aplikasi, tidak ikut warna peta. */
  #side{background:rgba(250,251,254,.94)}:root[data-theme="dark"] #side{background:rgba(16,22,38,.93)}
- #fab{left:auto;right:14px;bottom:calc(42% + 94px + env(safe-area-inset-bottom,0px));transition:bottom .3s}
- body.smin #fab{bottom:calc(226px + env(safe-area-inset-bottom,0px))}body.smax #fab{opacity:0;pointer-events:none}
+ #fab{left:auto;right:14px;bottom:calc(32% + 94px + env(safe-area-inset-bottom,0px));transition:bottom .3s}
+ body.smin #fab{bottom:calc(var(--sheet-min-content,156px) + 94px + env(safe-area-inset-bottom,0px))}body.smax #fab{opacity:0;pointer-events:none}
+ #busn{display:none}
+ #busnMobile{display:flex;gap:7px;align-items:center;margin:6px 0 0;padding:6px 8px;border-radius:10px;font-size:.7rem;line-height:1.25}
+ #busnMobile .bi{width:20px;height:20px;border-radius:6px}
+ #busnMobile svg{width:14px;height:14px}
+ #busnMobile>span:last-child{min-width:0;overflow-wrap:anywhere}
+ #busnMobile b{display:inline;font-size:.7rem}
+ #busnMobile small{font-size:.62rem;line-height:1.2}
+ .leaflet-popup-content-wrapper{border-radius:14px}
+ .leaflet-popup-content{margin:10px 11px;font-size:.8rem;line-height:1.35;max-width:min(260px,calc(100vw - 72px))!important;max-height:calc(100vh - 120px);overflow-y:auto;overscroll-behavior:contain;overflow-wrap:break-word;box-sizing:border-box}
+ .leaflet-popup-content b{font-size:.88rem;margin-bottom:1px}
+ .leaflet-popup-content .nbp{margin-top:6px;padding:6px 8px;font-size:.72rem;line-height:1.4}
+ .leaflet-popup-content .gm-actions{display:flex;gap:6px;margin-top:6px;min-width:0}
+ .leaflet-popup-content .gm-actions .gm{flex:1 1 0;min-width:0;max-width:100%;margin:0;padding:7px 5px;justify-content:center;gap:4px;font-size:.68rem;white-space:nowrap}
+ .leaflet-popup-content .gm .ic{width:13px;height:13px}
+ .leaflet-popup-content .gm-actions .gm .ic{flex:none}
  .leaflet-top.leaflet-right{display:none}
 }
+@media (max-width:360px){.leaflet-popup-content .gm-full{display:none}.leaflet-popup-content .gm-compact{display:inline}}
+@supports (height:100dvh){@media (max-width:760px){.leaflet-popup-content{max-height:calc(100dvh - 120px)}}}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 [hidden]{display:none!important}</style><style>
 .busn.is-closed{background:linear-gradient(135deg,rgba(100,116,139,.12),rgba(71,85,105,.06));border:1px solid rgba(100,116,139,.22)}
 .busn .bi.closed{background:#64748b}
 </style><link rel="stylesheet" href="vice-city-theme.css">
-</head><body>
+</head><body class="smin">
 <div id="map"></div>
 <header id="bar" class="glass">
  <div class="brand"><span class="logo app-icon-crossfade" aria-hidden="true"><img class="app-icon-layer app-icon-day" src="icons/icon-64.png?v=2" alt="" width="38" height="38" draggable="false"><img class="app-icon-layer app-icon-night" src="icons/neon-icon-64.png" alt="" width="38" height="38" draggable="false"></span><div><h1>Bus Listrik Trans Sarbagita</h1><small>Peta halte · Koridor 1 GOR – GWK</small></div></div>
@@ -235,12 +248,13 @@ button,input{font:inherit;color:inherit}
 <a class="on" aria-current="page" aria-label="Peta penuh" title="Peta penuh"><svg viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg><span>Peta</span></a>
 <a href="./#info" aria-label="Info" title="Info"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span>Info</span></a>
 </div></nav>
-<aside id="side" class="glass">
- <button class="grab" id="grab" type="button" aria-label="Ubah ukuran panel"></button>
+<aside id="side" class="glass min">
+ <button class="grab" id="grab" type="button" aria-label="Ubah ukuran panel" aria-controls="side" aria-expanded="false"></button>
  <div class="ph">
   <div class="ph-t"><b>Daftar Halte</b><span id="cnt"></span></div>
   <div id="route"></div>
   <div class="q"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><input id="q" type="search" placeholder="Cari halte..." aria-label="Cari halte"></div>
+  <div class="busn compact" id="busnMobile" role="status" aria-live="polite"></div>
  </div>
  <div id="ls"></div>
 </aside>
@@ -259,7 +273,8 @@ var cor="c1",dir="a",sel=-1,D={"c1":{"a":[["GOR Ngurah Rai",-8.649398,115.223423
 /* Koridor 2 (bus konvensional) disembunyikan sementara. Ubah K2 jadi true untuk menampilkannya lagi. */
 var K2=false;if(!K2)delete D.c2;
 try{var QS=new URLSearchParams(location.search);if(QS.get("c")==="c2"&&D.c2)cor="c2";if(QS.get("d")==="b")dir="b"}catch(e){}
-var VICE_CITY_ENABLED=window.SGT_THEME_CONFIG.visualPreset==="vice-city",modeDark=document.documentElement.getAttribute("data-theme")==="dark",dark=VICE_CITY_ENABLED||modeDark;function syncPresetButton(){var b=$("viceThemeBtnMap"),english=document.documentElement.lang==="en",label=VICE_CITY_ENABLED?(english?"Disable GTA VI neon theme":"Matikan tema neon GTA VI"):(english?"Enable GTA VI neon theme":"Aktifkan tema neon GTA VI");if(!b)return;b.setAttribute("aria-pressed",VICE_CITY_ENABLED?"true":"false");b.setAttribute("aria-label",label);b.title=label}function setMapPreset(active,redrawMap){if(active===VICE_CITY_ENABLED){syncPresetButton();return}VICE_CITY_ENABLED=active;var preset=active?"vice-city":"classic",root=document.documentElement;window.SGT_THEME_CONFIG.visualPreset=preset;root.setAttribute("data-visual-preset",preset);try{localStorage.setItem("sarbagita-visual-preset",preset)}catch(e){}var manifest=$("appManifest"),touchIcon=$("appleTouchIcon");if(manifest)manifest.href=active?"manifest.webmanifest":"manifest-classic.webmanifest";if(touchIcon)touchIcon.href=active?"icons/neon-apple-touch-icon.png":"icons/apple-touch-icon.png?v=2";dark=VICE_CITY_ENABLED||modeDark;syncPresetButton();syncModeButton();if(redrawMap!==false){setFavicon();tiles();draw()}}function syncModeButton(){var b=$("th"),english=document.documentElement.lang==="en",label=VICE_CITY_ENABLED?(english?(modeDark?"Night mode selected. Tap to switch to day mode and return to Classic theme.":"Day mode selected. Tap to switch to night mode and return to Classic theme."):(modeDark?"Mode malam dipilih. Ketuk untuk beralih ke siang dan kembali ke tema Classic.":"Mode siang dipilih. Ketuk untuk beralih ke malam dan kembali ke tema Classic.")):(english?(modeDark?"Night mode selected. Click to switch to day mode.":"Day mode selected. Click to switch to night mode."):(modeDark?"Mode malam dipilih. Klik untuk beralih ke mode siang.":"Mode siang dipilih. Klik untuk beralih ke mode malam."));if(!b)return;b.disabled=false;b.setAttribute("aria-pressed",modeDark?"true":"false");b.setAttribute("aria-label",label);b.title=label}function restoreClassicPreset(){setMapPreset(false,false)}function setFavicon(){var f32=$("favicon32"),f192=$("favicon192"),m=document.querySelector('meta[name="theme-color"]'),neon=window.SGT_THEME_CONFIG.visualPreset==="vice-city";if(m)m.content=neon?"#21103f":(dark?"#0b1220":"#0a78e6");if(f32)f32.href=neon?"icons/neon-icon-32.png":"icons/icon-32.png?v=2";if(f192)f192.href=neon?"icons/neon-icon-192.png":"icons/icon-192.png?v=2"}setFavicon();syncModeButton();syncPresetButton();
+function redrawThemeMap(){var openStop=-1;Object.keys(mk||{}).some(function(k){var marker=mk[k];if(marker&&marker.isPopupOpen()){openStop=Number(k);return true}return false});tiles();draw();if(openStop>=0&&mk[openStop])mk[openStop].openPopup()}
+var VICE_CITY_ENABLED=window.SGT_THEME_CONFIG.visualPreset==="vice-city",modeDark=document.documentElement.getAttribute("data-theme")==="dark",dark=VICE_CITY_ENABLED||modeDark;function syncPresetButton(){var b=$("viceThemeBtnMap"),english=document.documentElement.lang==="en",label=VICE_CITY_ENABLED?(english?"Disable GTA VI neon theme":"Matikan tema neon GTA VI"):(english?"Enable GTA VI neon theme":"Aktifkan tema neon GTA VI");if(!b)return;b.setAttribute("aria-pressed",VICE_CITY_ENABLED?"true":"false");b.setAttribute("aria-label",label);b.title=label}function setMapPreset(active,redrawMap){if(active===VICE_CITY_ENABLED){syncPresetButton();return}VICE_CITY_ENABLED=active;var preset=active?"vice-city":"classic",root=document.documentElement;window.SGT_THEME_CONFIG.visualPreset=preset;root.setAttribute("data-visual-preset",preset);try{localStorage.setItem("sarbagita-visual-preset",preset)}catch(e){}var manifest=$("appManifest"),touchIcon=$("appleTouchIcon");if(manifest)manifest.href=active?"manifest.webmanifest":"manifest-classic.webmanifest";if(touchIcon)touchIcon.href=active?"icons/neon-apple-touch-icon.png":"icons/apple-touch-icon.png?v=2";dark=VICE_CITY_ENABLED||modeDark;syncPresetButton();syncModeButton();if(redrawMap!==false){setFavicon();redrawThemeMap()}}function syncModeButton(){var b=$("th"),english=document.documentElement.lang==="en",label=VICE_CITY_ENABLED?(english?(modeDark?"Night mode selected. Tap to switch to day mode and return to Classic theme.":"Day mode selected. Tap to switch to night mode and return to Classic theme."):(modeDark?"Mode malam dipilih. Ketuk untuk beralih ke siang dan kembali ke tema Classic.":"Mode siang dipilih. Ketuk untuk beralih ke malam dan kembali ke tema Classic.")):(english?(modeDark?"Night mode selected. Click to switch to day mode.":"Day mode selected. Click to switch to night mode."):(modeDark?"Mode malam dipilih. Klik untuk beralih ke mode siang.":"Mode siang dipilih. Klik untuk beralih ke mode malam."));if(!b)return;b.disabled=false;b.setAttribute("aria-pressed",modeDark?"true":"false");b.setAttribute("aria-label",label);b.title=label}function restoreClassicPreset(){setMapPreset(false,false)}function setFavicon(){var f32=$("favicon32"),f192=$("favicon192"),m=document.querySelector('meta[name="theme-color"]'),neon=window.SGT_THEME_CONFIG.visualPreset==="vice-city";if(m)m.content=neon?"#21103f":(dark?"#0b1220":"#0a78e6");if(f32)f32.href=neon?"icons/neon-icon-32.png":"icons/icon-32.png?v=2";if(f192)f192.href=neon?"icons/neon-icon-192.png":"icons/icon-192.png?v=2"}setFavicon();syncModeButton();syncPresetButton();
 var map=L.map("map",{zoomControl:false}).setView([-8.72,115.19],12);
 L.control.zoom({position:"topright"}).addTo(map);
 /* === PILIH PENYEDIA PETA: cukup ubah PROVIDER (dan KEY jika perlu) === */
@@ -275,15 +290,18 @@ function tiles(){var TILES={
  maptiler:{u:"https://api.maptiler.com/maps/"+(dark?"streets-v2-dark":"streets-v2")+"/256/{z}/{x}/{y}.png?key="+KEY,o:{maxZoom:20,attribution:"&copy; MapTiler &copy; OpenStreetMap"}}
  },T=TILES[PROVIDER];if(TL&&PROVIDER==="osm")return;if(TL)map.removeLayer(TL);TL=L.tileLayer(T.u,T.o).addTo(map)}
 tiles();
-var lg=L.layerGroup().addTo(map),g=L.layerGroup().addTo(map),navLayer=L.layerGroup().addTo(map),me=null,mk={};
+var lg=L.layerGroup().addTo(map),g=L.layerGroup().addTo(map),me=null,mk={};
 var N={c1:["Sarbagita · S1B","Arah: GWK","Arah: GOR Ngurah Rai"],c2:["Koridor 2","Kota → Nusa Dua","Nusa Dua → Kota"]};
 var EXT='<svg class="ic" viewBox="0 0 24 24" style="width:15px;height:15px"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
 function $(i){return document.getElementById(i)}
 var TT=0;function toast(m){var e=$("toast");e.textContent=m;e.hidden=false;clearTimeout(TT);TT=setTimeout(function(){e.hidden=true},5000)}
 function esc(t){return String(t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function gm(s){return s[1]?"https://www.google.com/maps/search/?api=1&query="+s[1]+","+s[2]:"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent("Halte "+s[0]+" Bali")}
+function prefersReducedMotion(){return !!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)}
+function mapGoTo(ll,zoom,options){if(prefersReducedMotion())map.setView(ll,zoom,{animate:false});else map.flyTo(ll,zoom,options||{duration:.75,easeLinearity:.25})}
+function mapGoToBounds(bounds,options){var o=Object.assign({duration:.7,easeLinearity:.25},options||{});if(prefersReducedMotion()){o.animate=false;map.fitBounds(bounds,o)}else map.flyToBounds(bounds,o)}
 function fit(){var b=L.latLngBounds([]);D[cor].line.concat(D[cor]["l"+dir]||[],D[cor]["d"+dir]||[]).forEach(function(sg){b.extend(sg)});
- var w=innerWidth>760,pad=w?{paddingTopLeft:[40,110],paddingBottomRight:[400,40]}:{paddingTopLeft:[24,130],paddingBottomRight:[24,innerHeight*.45]};map.fitBounds(b,pad)}
+ var w=innerWidth>760,side=$("side"),sheet=side?side.getBoundingClientRect().height:0,bottom=Math.min(Math.max(sheet+12,96),Math.max(96,innerHeight-160)),pad=w?{paddingTopLeft:[40,110],paddingBottomRight:[400,40]}:{paddingTopLeft:[24,130],paddingBottomRight:[24,bottom]};mapGoToBounds(b,pad)}
 /* === Perkiraan posisi bus Koridor 1 dari jadwal (BUKAN GPS) ===
    Jadwal: [bus, berangkat GOR, tiba Sudirman, kembali di GOR], jam WITA.
    GOR -> Sudirman memakai waktu jadwal; sisanya dibagi rata menurut jarak, dengan istirahat LAY menit di GWK. */
@@ -400,14 +418,19 @@ async function pollDirectGps() {
       lastLivePush = now;
       isLiveGps = true;
       liveSarbagitaBuses = json.data
-        .filter(function(b) { return b.pref === "14" && b.lat && b.lng; })
+        .filter(function(b) {
+          if(!b || String(b.pref) !== "14" || b.lat == null || b.lng == null || String(b.lat).trim() === "" || String(b.lng).trim() === "") return false;
+          var lat=Number(b.lat),lng=Number(b.lng);
+          return Number.isFinite(lat) && Number.isFinite(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180;
+        })
         .map(function(b) {
+          var speed=Number(b.speed);
           return {
             id: b.id,
-            lat: b.lat,
-            lng: b.lng,
+            lat: Number(b.lat),
+            lng: Number(b.lng),
             angle: Number(b.angle) || 0,
-            speed: b.speed || 0,
+            speed: Number.isFinite(speed) ? Math.max(0,Math.min(200,speed)) : 0,
             corridor: b.kor || "S1",
             toward: b.toward || "",
             plate: b.plate_number || "",
@@ -446,34 +469,24 @@ function lerpAngle(fromA, toA, t) {
 }
 
 function startLiveAnimLoop() {
+  var frameId=0;
   function frame(now) {
+    frameId=0;if(document.hidden)return;
+    var reduced=prefersReducedMotion(),active=false;
     for (var entry of liveAnimStates.entries()) {
-      var s = entry[1];
-      if (!s.animating) continue;
-      var elapsed = now - s.startTime;
-      var progress = Math.min(1, elapsed / s.duration);
-      var curLat = s.fromLat + (s.toLat - s.fromLat) * progress;
-      var curLng = s.fromLng + (s.toLng - s.fromLng) * progress;
-      s.marker.setLatLng([curLat, curLng]);
-      var curAngle = lerpAngle(s.fromAngle, s.toAngle, progress);
-      s.curAngle = curAngle;
-      var el = s.marker.getElement();
-      if (el) {
-        var ico = el.querySelector(".bus-ico-rot");
-        if (ico) ico.style.transform = "rotate(" + curAngle + "deg)";
-      }
-      if (progress >= 1) {
-        s.animating = false;
-        s.fromLat = s.toLat;
-        s.fromLng = s.toLng;
-        s.fromAngle = s.toAngle;
-      }
+      var s = entry[1];if (!s.animating) continue;
+      var progress=reduced?1:Math.min(1,(now-s.startTime)/s.duration),curLat=s.fromLat+(s.toLat-s.fromLat)*progress,curLng=s.fromLng+(s.toLng-s.fromLng)*progress;
+      s.marker.setLatLng([curLat,curLng]);var curAngle=lerpAngle(s.fromAngle,s.toAngle,progress);s.curAngle=curAngle;
+      var el=s.marker.getElement();if(el){var ico=el.querySelector(".bus-ico-rot");if(ico)ico.style.transform="rotate("+curAngle+"deg)"}
+      if(progress>=1){s.animating=false;s.fromLat=s.toLat;s.fromLng=s.toLng;s.fromAngle=s.toAngle}else active=true;
     }
-    requestAnimationFrame(frame);
+    if(active&&!reduced&&!document.hidden)frameId=requestAnimationFrame(frame);
   }
-  requestAnimationFrame(frame);
+  function request(){if(!frameId&&!document.hidden&&!prefersReducedMotion())frameId=requestAnimationFrame(frame)}
+  document.addEventListener("visibilitychange",function(){if(document.hidden&&frameId){cancelAnimationFrame(frameId);frameId=0}else request()});
+  return request;
 }
-startLiveAnimLoop();
+var requestLiveAnimFrame=startLiveAnimLoop();
 
 function liveBusIcon(angle) {
   var busImage = "./icons/Lightning%20Bolt%20Bus%20Icon.png";
@@ -493,15 +506,16 @@ function liveBusIcon(angle) {
 
 initLiveGPS();
 
+function setBusStatus(html,closed){["busn","busnMobile"].forEach(function(id){var card=$(id);if(!card)return;if(card.__busStatusHtml!==html||card.classList.contains("is-closed")!==!!closed){card.__busStatusHtml=html;card.classList.toggle("is-closed",!!closed);card.innerHTML=html}})}
 function buses(){
-  var e=$("busn"),n=0,staleGps=0,seen={};
+  var n=0,staleGps=0,seen={};
   if(serviceClosedNow()){
     liveAnimStates.forEach(function(s){bl.removeLayer(s.marker)});liveAnimStates.clear();
     for(var k in BM){bl.removeLayer(BM[k]);delete BM[k]}
-    if(e){var t=dt(SJ[0][1]),afterHours=wita()>=NIGHT_HIDE_AT,title=afterHours?"Layanan bus hari ini sudah berakhir":"Bus mulai beroperasi hari ini pukul "+t+" WITA",detail=afterHours?"Mulai lagi besok pukul "+t+" WITA. Lokasi halte dan jadwal tetap bisa dicek.":"Posisi bus realtime tersedia mulai pukul "+t+" WITA. Lokasi halte dan jadwal tetap bisa dicek.";e.classList.add("is-closed");e.innerHTML='<span class="bi closed">'+CLOSED_ICON+'</span><span><b>'+title+'</b><br><small>'+detail+'</small></span>'}
+    var t=dt(SJ[0][1]),afterHours=wita()>=NIGHT_HIDE_AT,title=afterHours?"Layanan bus hari ini sudah berakhir":"Bus mulai beroperasi hari ini pukul "+t+" WITA",detail=afterHours?"Mulai lagi besok pukul "+t+" WITA. Lokasi halte dan jadwal tetap bisa dicek.":"Posisi GPS realtime tersedia mulai pukul "+t+" WITA. Lokasi halte dan jadwal tetap bisa dicek.";
+    setBusStatus('<span class="bi closed">'+CLOSED_ICON+'</span><span><b>'+title+'</b><br><small>'+detail+'</small></span>',true);
     return;
   }
-  if(e)e.classList.remove("is-closed");
   var gpsFresh=isLiveGps&&Array.isArray(liveSarbagitaBuses)&&Date.now()-lastLivePush<LIVE_GPS_TTL;
 
   // Data baru dari GPS, termasuk respons valid yang berisi nol bus.
@@ -558,8 +572,12 @@ function buses(){
         existing.fromAngle = existing.curAngle;
         existing.toAngle = angle;
         existing.startTime = now;
-        existing.duration = liveInterval * 0.95;
-        existing.animating = true;
+        existing.duration = Math.max(250,liveInterval * 0.95);
+        existing.animating = !prefersReducedMotion();
+        if(prefersReducedMotion()){
+          existing.marker.setLatLng([b.lat,b.lng]);existing.fromLat=b.lat;existing.fromLng=b.lng;existing.fromAngle=angle;existing.curAngle=angle;
+          var reducedEl=existing.marker.getElement(),reducedIcon=reducedEl&&reducedEl.querySelector(".bus-ico-rot");if(reducedIcon)reducedIcon.style.transform="rotate("+angle+"deg)";
+        }else requestLiveAnimFrame();
       } else {
         var marker = L.marker([b.lat, b.lng], { zIndexOffset: 1500, icon: liveBusIcon(angle) })
           .bindPopup(h, { className: "bus-detail-popup", autoPan: false })
@@ -582,9 +600,7 @@ function buses(){
       }
     }
 
-    if(e) e.innerHTML = '<span class="bi" style="background:#16a34a">' + BUS + '</span>' +
-      '<span>' + (n ? '<b>' + n + ' bus Sarbagita aktif</b> di rute ini' : staleGps ? '<b>Posisi GPS bus sudah usang</b><br><small>Bus disembunyikan karena pembaruan lebih dari 10 menit.</small>' : '<b>Belum ada bus terdeteksi</b>') +
-      (staleGps&&!n?'':'.<br><small style="color:#16a34a;font-weight:700">● GPS aktif · posisi diperbarui berkala</small>') + '</span>';
+    setBusStatus('<span class="bi" style="background:#16a34a">' + BUS + '</span>' + '<span>' + (n ? '<b>' + n + ' bus Sarbagita aktif</b> di rute ini' : staleGps ? '<b>Posisi GPS bus sudah usang</b><br><small>Bus disembunyikan karena pembaruan lebih dari 10 menit.</small>' : '<b>Belum ada bus terdeteksi</b>') + (staleGps&&!n?'':'.<br><small style="color:#16a34a;font-weight:700">● GPS aktif · posisi diperbarui berkala</small>') + '</span>',false);
     return;
   }
 
@@ -592,7 +608,7 @@ function buses(){
   liveAnimStates.forEach(function(s){bl.removeLayer(s.marker)});
   liveAnimStates.clear();
   for(var k in BM){bl.removeLayer(BM[k]);delete BM[k]}
-  if(e) e.innerHTML = '<span class="bi">' + BUS + '</span><span><b>' + (isLiveGps?'Data GPS tidak diperbarui':'Menghubungkan ke GPS bus') + '</b><br><small>' + (isLiveGps?'Mencoba menyambungkan ulang…':'Mengambil posisi bus…') + '</small></span>';
+  setBusStatus('<span class="bi">' + BUS + '</span><span><b>' + (isLiveGps?'Data GPS tidak diperbarui':'Menghubungkan ke GPS bus') + '</b><br><small>' + (isLiveGps?'Mencoba menyambungkan ulang…':'Mengambil posisi bus…') + '</small></span>',false);
 }
 setInterval(buses,5000);document.addEventListener("visibilitychange",function(){if(!document.hidden)buses()});
 /* Jalur alternatif GPS yang didigitasi dari panduan gambar untuk ruas GOR–Sudirman. */
@@ -626,114 +642,74 @@ function draw(){
   var statusBadge=end?(i==0?"Halte awal":"Halte akhir"):"";
   if(s[1]){var m=L.marker([s[1],s[2]],{zIndexOffset:end?1000:0,icon:L.divIcon({className:"",html:'<div class="mk'+(end?" e":"")+'">'+(i+1)+'</div>',iconSize:end?[28,28]:[26,26],iconAnchor:end?[14,14]:[13,13],popupAnchor:[0,-14]})}).addTo(g);
    m.bindPopup(function(){
-    var isCurrent = currentNav.stopIndex === i;
-    var currentMode = isCurrent ? (currentNav.mode || "foot") : "foot";
-    var timeText = (isCurrent && currentNav.durSec) ? (currentMode === "foot" ? "🚶 " : "🚗 ") + formatDuration(currentNav.durSec) : (currentMode === "foot" ? "🚶 " : "🚗 ") + "Menghitung rute…";
-    var distText = (isCurrent && currentNav.distM) ? "(" + formatDist(currentNav.distM) + ")" : "";
-    var fromText = "Dari: " + (currentNav.startName || "Lokasi Anda");
-
     return "<b>"+(i+1)+". "+esc(s[0])+"</b>"+
      '<div style="margin:4px 0 7px 0;font-size:12px;line-height:1.4">'+
       '<span style="display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:700;color:#fff;background:#0284c7">Sarbagita · S1B</span>'+
       '<div style="margin-top:3px;opacity:.85">Arah: <b>'+esc(arahNama)+'</b>'+(statusBadge?' · <i>'+statusBadge+'</i>':'')+'</div>'+
      '</div>'+
      nbP(dd,i)+
-     '<div class="pop-route-box" id="popRouteBox">'+
-      '<div class="pop-route-header">'+
-       '<div class="pop-route-stat">'+
-        '<span class="pop-route-time" id="popRouteTime">'+timeText+'</span>'+
-        '<span class="pop-route-dist" id="popRouteDist">'+distText+'</span>'+
-       '</div>'+
-       '<div class="pop-mode-toggle">'+
-        '<button type="button" class="pop-mode '+(currentMode==="foot"?"on":"")+'" id="popModeFoot" onclick="window.navRouteTo('+i+',0);return false;">'+
-         '<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M10 22v-5l-2-3 2-4 2 3v9M14 10l2 4-2 3v5"/></svg>'+
-         '<span>Jalan</span>'+
-        '</button>'+
-        '<button type="button" class="pop-mode '+(currentMode==="driving"?"on":"")+'" id="popModeDrive" onclick="window.navRouteTo('+i+',1);return false;">'+
-         '<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="8" rx="2"/><path d="M7 11V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4M7 15h.01M17 15h.01"/></svg>'+
-         '<span>Motor/Mobil</span>'+
-        '</button>'+
-       '</div>'+
-      '</div>'+
-      '<div class="pop-route-footer">'+
-       '<span class="pop-route-from" id="popRouteFrom">'+fromText+'</span>'+
-       '<button type="button" class="pop-clear-btn" onclick="window.clearNavRoute();return false;">✕ Tutup Rute</button>'+
-      '</div>'+
-     '</div>'+
-     '<div style="margin-top:8px"><a class="gm alt" target="_blank" rel="noopener" href="'+gm(s)+'">'+EXT+' Buka di Google Maps ↗</a></div>';
-   });
-   m.on("click",function(){mark(i);window.navRouteTo(i)});mk[i]=m}
+     '<div class="gm-actions"><a class="gm" aria-label="Petunjuk arah ke halte ini di Google Maps" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination='+s[1]+','+s[2]+'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg><span class="gm-full">Petunjuk arah</span><span class="gm-compact" aria-hidden="true">Rute</span></a>'+
+     '<a class="gm alt" aria-label="Buka lokasi halte ini di Google Maps" target="_blank" rel="noopener" href="'+gm(s)+'">'+EXT+'<span class="gm-full">Google Maps</span><span class="gm-compact" aria-hidden="true">Google Maps</span></a></div>';
+   },{maxWidth:300,autoPan:true});
+   m.on("click",function(){mark(i)});mk[i]=m}
   if(q&&s[0].toLowerCase().indexOf(q)<0)return;n++;
   var d=document.createElement("div");d.className="it"+(i==0?" f":"")+(i==S.length-1?" l":"")+(i===sel?" sel":"");d.dataset.i=i;d.tabIndex=0;d.setAttribute("role","button");d.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();d.onclick()}};
   d.innerHTML='<span class="n">'+(i+1)+'</span><span class="ext">'+(s[1]?"":EXT)+'</span><div class="nm">'+esc(s[0])+
    '<div style="font-size:11px;opacity:.8;font-weight:500;margin-top:2px"><b style="color:var(--b)">Sarbagita · S1B</b> · Arah: '+esc(arahNama)+(statusBadge?' · <i>'+statusBadge+'</i>':'')+'</div>'+
   '</div>';
-  d.onclick=function(){if(mk[i]){mark(i);map.flyTo(mk[i].getLatLng(),16,{duration:.8});mk[i].openPopup();if(innerWidth<=760)size("min");window.navRouteTo(i)}else window.open(gm(s),"_blank","noopener")};
+  d.onclick=function(){if(mk[i]){mark(i);mapGoTo(mk[i].getLatLng(),16,{duration:.8,easeLinearity:.25});mk[i].openPopup();if(innerWidth<=760)size("min")}else window.open(gm(s),"_blank","noopener")};
   ls.appendChild(d)});
  $("cnt").textContent=(q?n+" / ":"")+S.length+" halte";
  if(!n)ls.innerHTML='<div class="empty">Halte tidak ditemukan.<br><small>Coba kata kunci lain.</small></div>';
  ls.insertAdjacentHTML("beforeend",'<div class="srcn">Peta halte bus listrik Trans Sarbagita di Bali: Koridor 1 GOR Ngurah Rai–GWK. Beberapa koordinat halte merupakan perkiraan; lihat bagian sumber data untuk rinciannya.</div>');ls.insertAdjacentHTML("afterbegin",'<div class="busn" id="busn"></div>');bl.clearLayers();BM={};liveAnimStates.clear();buses()}
-function mark(i){sel=i;document.querySelectorAll(".it").forEach(function(e){var on=+e.dataset.i===i;e.classList.toggle("sel",on);if(on&&e.scrollIntoView)e.scrollIntoView({block:"nearest",behavior:"smooth"})})}
+function mark(i){sel=i;document.querySelectorAll(".it").forEach(function(e){var on=+e.dataset.i===i;e.classList.toggle("sel",on);if(on&&e.scrollIntoView)e.scrollIntoView({block:"nearest",behavior:prefersReducedMotion()?"auto":"smooth"})})}
 function seg(id,items,cur,fn){var c=$(id);c.innerHTML="";items.forEach(function(x){var b=document.createElement("button");b.type="button";b.textContent=x[1];b.className=cur==x[0]?"on":"";b.setAttribute("aria-pressed",cur==x[0]);b.onclick=function(){fn(x[0])};c.appendChild(b)})}
 function tabs(){
- if(window.clearNavRoute)clearNavRoute();
  var ci=[["c1",N.c1[0]],["c2",N.c2[0]]].filter(function(x){return D[x[0]]});$("ct").hidden=ci.length<2;seg("ct",ci,cor,function(k){if(k==cor)return;cor=k;dir="a";sel=-1;tabs();draw();fit()});
  seg("tb",[["a",N[cor][1]],["b",N[cor][2]]],dir,function(k){dir=k;sel=-1;tabs();draw();fit()})}
 /* bottom sheet (mobile) */
-var st=["min","mid","max"],cur=1;
-function size(s){cur=st.indexOf(s);var sd=$("side");sd.classList.remove("min","max");document.body.classList.remove("smin","smax");if(s!="mid"){sd.classList.add(s);document.body.classList.add("s"+s)}}
+var st=["min","mid","max"],cur=0;
+function syncMinSheetHeight(){var sd=$("side");if(innerWidth>760||!sd||!sd.classList.contains("min"))return;var ph=sd.querySelector(".ph"),grab=$("grab");if(!ph||!grab)return;var px=Math.ceil(grab.getBoundingClientRect().height+ph.scrollHeight+4),next=Math.max(156,px);document.documentElement.style.setProperty("--sheet-min-content",next+"px")}
+function size(s){var i=st.indexOf(s);if(i<0){s="mid";i=1}cur=i;var sd=$("side"),grab=$("grab");sd.classList.remove("min","max");document.body.classList.remove("smin","smax");if(s!=="mid"){sd.classList.add(s);document.body.classList.add("s"+s)}grab.setAttribute("aria-expanded",s!=="min"?"true":"false");if(s==="min"){requestAnimationFrame(syncMinSheetHeight);setTimeout(syncMinSheetHeight,250)}}
+size(innerWidth<=760?"min":"mid");
+if(window.ResizeObserver){var minSheetHeader=$("side").querySelector(".ph");new ResizeObserver(function(){if(cur===0)syncMinSheetHeight()}).observe(minSheetHeader)}
+addEventListener("resize",function(){if(cur===0)syncMinSheetHeight()});
 /* Geser panel naik/turun: tarik bagian atas panel (garis, judul, rute), lalu panel menempel ke posisi terdekat. */
-(function(){var sd=$("side"),ph=sd.querySelector(".ph"),fb=$("fab"),y0=0,h0=0,t0=0,on=false,moved=false;
- function hs(){var H=innerHeight,b=H-$("nav").getBoundingClientRect().top+10;return {min:132+b,mid:H*.42+b,max:H*.78-68+b}}
- function down(e){if(innerWidth>760||e.button>0||e.target.closest("input,button:not(.grab),a"))return;
-  on=true;moved=false;y0=e.clientY;t0=Date.now();h0=sd.getBoundingClientRect().height;sd.style.transition="none";fb.style.transition="none"}
- function move(e){if(!on)return;var dy=y0-e.clientY;if(!moved&&Math.abs(dy)<6)return;moved=true;
+(function(){var sd=$("side"),ph=sd.querySelector(".ph"),fb=$("fab"),y0=0,h0=0,t0=0,on=false,moved=false,pointerId=null;
+ function hs(){var H=innerHeight,b=H-$("nav").getBoundingClientRect().top+10,base=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--sheet-min-content"))||156;return {min:base+b,mid:H*.32+b,max:H*.74-68+b}}
+ function down(e){if(innerWidth>760||e.isPrimary===false||e.button>0||e.target.closest("input,button:not(.grab),a"))return;
+  on=true;moved=false;pointerId=e.pointerId;y0=e.clientY;t0=Date.now();h0=sd.getBoundingClientRect().height;sd.style.transition="none";fb.style.transition="none";try{e.currentTarget.setPointerCapture(pointerId)}catch(err){}}
+ function move(e){if(!on||e.pointerId!==pointerId)return;var dy=y0-e.clientY;if(!moved&&Math.abs(dy)<6)return;moved=true;
   var r=hs(),h=Math.max(r.min-20,Math.min(r.max+20,h0+dy));sd.style.height=h+"px";fb.style.bottom=(innerHeight-sd.getBoundingClientRect().top+18)+"px";e.preventDefault()}
- function up(e){if(!on)return;on=false;sd.style.transition=fb.style.transition="";if(!moved)return;
+ function up(e){if(!on||e.pointerId!==pointerId)return;on=false;pointerId=null;sd.style.transition=fb.style.transition="";if(!moved)return;
   var r=hs(),h=sd.getBoundingClientRect().height,v=(y0-e.clientY)/Math.max(1,Date.now()-t0),best="mid",bd=1e9;
-  if(Math.abs(v)>.5){best=v>0?(h0<r.mid-10?"mid":"max"):(h0>r.mid+10?"mid":"min")}
+  if(Math.abs(v)>.5){best=v>0?(h>r.mid+10?"max":"mid"):(h<r.mid-10?"min":"mid")}
   else for(var k in r){var d=Math.abs(r[k]-h);if(d<bd){bd=d;best=k}}
   sd.style.height="";fb.style.bottom="";size(best);moved=true;setTimeout(function(){moved=false},50)}
+ function cancel(e){if(!on||e.pointerId!==pointerId)return;on=false;pointerId=null;sd.style.height="";fb.style.bottom="";sd.style.transition=fb.style.transition="";size(st[cur])}
  [$("grab"),ph].forEach(function(el){el.addEventListener("pointerdown",down);el.style.touchAction="none"});
- addEventListener("pointermove",move,{passive:false});addEventListener("pointerup",up);addEventListener("pointercancel",up);
+ addEventListener("pointermove",move,{passive:false});addEventListener("pointerup",up);addEventListener("pointercancel",cancel);
  $("grab").onclick=function(){if(!moved)size(st[(cur+1)%3])};
 })();
 $("q").onfocus=function(){if(innerWidth<=760)size("max")};
 $("q").oninput=draw;$("fit").onclick=fit;
-$("viceThemeBtnMap").onclick=function(){setMapPreset(!VICE_CITY_ENABLED,true)};$("th").onclick=function(){var nextMode=!modeDark;restoreClassicPreset();modeDark=nextMode;var r=document.documentElement;if(modeDark)r.setAttribute("data-theme","dark");else r.removeAttribute("data-theme");sgtSave(modeDark);dark=VICE_CITY_ENABLED||modeDark;syncModeButton();syncPresetButton();setFavicon();tiles();draw()};
-function autoTheme(){var dk=sgtTheme();if(dk!==modeDark){modeDark=dk;var r=document.documentElement;if(modeDark)r.setAttribute("data-theme","dark");else r.removeAttribute("data-theme");dark=VICE_CITY_ENABLED||modeDark;syncModeButton();setFavicon();tiles();draw()}}setInterval(autoTheme,60000);document.addEventListener("visibilitychange",function(){if(!document.hidden)autoTheme()});
-function getUserOrFallbackLocation(onComplete){
- if(window.userPos&&window.userPos.length===2){onComplete(window.userPos,window.userPosLabel||"Lokasi Anda");return}
- function fallbackIpOrTerminus(){
-  fetch("https://ipwho.is/").then(function(r){return r.json()}).then(function(res){
-   if(res&&res.success&&res.latitude&&res.longitude){
-    var ll=[res.latitude,res.longitude];window.userPos=ll;window.userPosLabel="Denpasar ("+(res.city||"Jaringan")+")";
-    onComplete(ll,window.userPosLabel);
-   }else{var S=D[cor][dir],st0=[S[0][1],S[0][2]];onComplete(st0,S[0][0])}
-  }).catch(function(){var S=D[cor][dir],st0=[S[0][1],S[0][2]];onComplete(st0,S[0][0])});
- }
- if(navigator.geolocation){
-  navigator.geolocation.getCurrentPosition(function(p){
-   var ll=[p.coords.latitude,p.coords.longitude];
-   window.userPos=ll;window.userPosLabel="Lokasi Anda";
-   onComplete(ll,"Lokasi Anda");
-  },function(){
-   fallbackIpOrTerminus();
-  },{enableHighAccuracy:false,timeout:3500,maximumAge:180000});
- }else{fallbackIpOrTerminus()}
+$("viceThemeBtnMap").onclick=function(){setMapPreset(!VICE_CITY_ENABLED,true)};$("th").onclick=function(){var nextMode=!modeDark;restoreClassicPreset();modeDark=nextMode;var r=document.documentElement;if(modeDark)r.setAttribute("data-theme","dark");else r.removeAttribute("data-theme");sgtSave(modeDark);dark=VICE_CITY_ENABLED||modeDark;syncModeButton();syncPresetButton();setFavicon();redrawThemeMap()};
+function autoTheme(){var dk=sgtTheme();if(dk!==modeDark){modeDark=dk;var r=document.documentElement;if(modeDark)r.setAttribute("data-theme","dark");else r.removeAttribute("data-theme");dark=VICE_CITY_ENABLED||modeDark;syncModeButton();setFavicon();redrawThemeMap()}}setInterval(autoTheme,60000);document.addEventListener("visibilitychange",function(){if(!document.hidden)autoTheme()});
+var SESSION_LOCATION_KEY="sarbagita-user-location-v1",SESSION_LOCATION_TTL=6*60*60*1000;
+function writeSessionLocation(d){var raw=JSON.stringify(d);try{localStorage.setItem(SESSION_LOCATION_KEY,raw)}catch(e){}try{sessionStorage.setItem(SESSION_LOCATION_KEY,raw)}catch(e){}}
+function removeSessionLocation(){var keys=[SESSION_LOCATION_KEY,"sarbagita-user-lat","sarbagita-user-lng","sarbagita-user-time"];try{keys.forEach(function(k){localStorage.removeItem(k)})}catch(e){}try{keys.forEach(function(k){sessionStorage.removeItem(k)})}catch(e){}}
+function readSessionLocation(){var raw=null;try{raw=localStorage.getItem(SESSION_LOCATION_KEY)}catch(e){}if(!raw)try{raw=sessionStorage.getItem(SESSION_LOCATION_KEY)}catch(e){}if(!raw){try{var la=localStorage.getItem("sarbagita-user-lat"),lo=localStorage.getItem("sarbagita-user-lng"),at=localStorage.getItem("sarbagita-user-time");if(la!==null&&lo!==null&&at!==null)raw=JSON.stringify({lat:Number(la),lng:Number(lo),savedAt:Number(at)})}catch(e){}}
+ if(!raw)return null;
+ try{var d=JSON.parse(raw);if(!d||!Number.isFinite(+d.lat)||!Number.isFinite(+d.lng)||+d.lat < -90||+d.lat > 90||+d.lng < -180||+d.lng > 180||!Number.isFinite(+d.savedAt)||Date.now()-Number(d.savedAt)>SESSION_LOCATION_TTL||Date.now()<Number(d.savedAt)-60000){removeSessionLocation();return null}return d}catch(e){removeSessionLocation();return null}}
+function saveSessionLocation(lat,lng){var d=readSessionLocation()||{};d.lat=Number(lat);d.lng=Number(lng);d.savedAt=Date.now();writeSessionLocation(d)}
+function showUserLocationOnMap(ll,focus){
+ if(me)me.setLatLng(ll);else me=L.marker(ll,{icon:L.divIcon({className:"",html:'<div class="me"></div>',iconSize:[18,18]}),zIndexOffset:2000}).addTo(map).bindPopup("<b>Lokasi Anda</b>");
+ if(!focus)return;
+ var S=D[cor][dir],best=-1,bd=1e9;S.forEach(function(s,i){if(!s[1])return;var d=map.distance(ll,[s[1],s[2]]);if(d<bd){bd=d;best=i}});
+ if(best>=0&&bd<40000){mapGoToBounds(L.latLngBounds([ll,[S[best][1],S[best][2]]]),{padding:[80,80],maxZoom:16});mark(best);if(mk[best])mk[best].openPopup()}else{mapGoTo(ll,14);me.openPopup()}
 }
-
-$("loc").onclick=function(){
- getUserOrFallbackLocation(function(ll,label){
-  if(me)me.setLatLng(ll);else me=L.marker(ll,{icon:L.divIcon({className:"",html:'<div class="me"></div>',iconSize:[18,18]}),zIndexOffset:2000}).addTo(map);
-  me.bindPopup("<b>"+esc(label)+"</b><br><small>Titik acuan rute ke halte</small>");
-  var S=D[cor][dir],best=-1,bd=1e9;
-  S.forEach(function(s,i){if(!s[1])return;var d=map.distance(ll,[s[1],s[2]]);if(d<bd){bd=d;best=i}});
-  if(best>=0&&bd<40000){map.flyToBounds(L.latLngBounds([ll,[S[best][1],S[best][2]]]),{padding:[80,80],maxZoom:16});mark(best);mk[best].openPopup()}
-  else{map.flyTo(ll,14);me.openPopup()}
-  if(label.indexOf("Denpasar")>=0)toast("📍 Menampilkan lokasi perkiraan Denpasar (jaringan)");
- });
-};
+$("loc").onclick=function(){if(!navigator.geolocation)return toast("Lokasi tidak didukung di perangkat ini.");
+ navigator.geolocation.getCurrentPosition(function(p){var ll=[p.coords.latitude,p.coords.longitude];saveSessionLocation(ll[0],ll[1]);showUserLocationOnMap(ll,true)},function(){toast("Izin lokasi tidak tersedia. Aktifkan izin lokasi di browser, atau ketuk halte di daftar untuk melihat jam bus berikutnya.")},{timeout:10000})};
 /* === PWA: service worker + tombol pasang === */
 var dp=null,isApp=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;
 if("serviceWorker" in navigator&&location.protocol!=="file:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).catch(function(){})});
@@ -748,94 +724,12 @@ function instGo(){
  else m="Buka menu browser, lalu pilih \u201cInstal aplikasi\u201d atau \u201cTambahkan ke layar utama\u201d.";
  toast(m)}
 document.querySelectorAll(".instb").forEach(function(b){b.onclick=instGo});instUI();
-/* === IN-APP ROUTE / NAVIGASI INTEGRASI DALAM POPUP CARD HALTE === */
-var currentNav={stopIndex:-1,mode:"foot",destCoord:null,destName:"",startCoord:null,startName:"Lokasi Anda",distM:0,durSec:0};
-function formatDist(m){if(m<1000)return Math.round(m)+" m";return (m/1000).toFixed(1).replace(".",",")+" km"}
-function formatDuration(sec){var m=Math.round(sec/60);if(m<1)return "< 1 mnt";if(m<60)return m+" mnt";var h=Math.floor(m/60),rm=m%60;return h+" jam"+(rm?" "+rm+" mnt":"")}
-function clearNavRoute(){
- navLayer.clearLayers();currentNav.stopIndex=-1;currentNav.destCoord=null;currentNav.distM=0;currentNav.durSec=0;
- document.querySelectorAll(".mk.nav-dest").forEach(function(e){e.classList.remove("nav-dest")});
- var timeEl=document.getElementById("popRouteTime"),distEl=document.getElementById("popRouteDist");
- if(timeEl)timeEl.textContent="Rute ditutup";if(distEl)distEl.textContent="";
-}
-function renderNavRouteOnMap(coords,start,dest,startName,destName){
- navLayer.clearLayers();
- var isVc=typeof VICE_CITY_ENABLED!=="undefined"&&VICE_CITY_ENABLED;
- var casingColor=(isVc||dark)?"#070b14":"#ffffff";
- var lineColor=isVc?"#00f0ff":"#1a73e8";
- L.polyline(coords,{color:casingColor,weight:9,opacity:.9,lineCap:"round",lineJoin:"round"}).addTo(navLayer);
- L.polyline(coords,{color:lineColor,weight:5.5,opacity:.98,lineCap:"round",lineJoin:"round"}).addTo(navLayer);
- if(!me||map.distance(start,me.getLatLng())>15){
-  L.marker(start,{icon:L.divIcon({className:"",html:'<div class="nav-pin-start">A</div>',iconSize:[22,22],iconAnchor:[11,11]}),zIndexOffset:1200}).bindPopup("<b>"+esc(startName)+"</b><br><small>Titik Awal Rute</small>").addTo(navLayer);
- }
- var b=L.latLngBounds(coords);
- var pad=innerWidth<=760?[35,35]:[70,70];
- map.fitBounds(b,{padding:pad,maxZoom:16});
-}
-function updateNavCardUI(distMeters,durSec,destName,startName,mode,stopData){
- currentNav.distM=distMeters;currentNav.durSec=durSec;currentNav.destName=destName;currentNav.startName=startName;currentNav.mode=mode;
- var timeEl=document.getElementById("popRouteTime"),distEl=document.getElementById("popRouteDist"),fromEl=document.getElementById("popRouteFrom");
- var btnFoot=document.getElementById("popModeFoot"),btnDrive=document.getElementById("popModeDrive");
- var icon=mode==="foot"?"🚶 ":"🚗 ";
- if(timeEl)timeEl.textContent=icon+formatDuration(durSec);
- if(distEl)distEl.textContent="("+formatDist(distMeters)+")";
- if(fromEl)fromEl.textContent="Dari: "+startName;
- if(btnFoot)btnFoot.className="pop-mode"+(mode==="foot"?" on":"");
- if(btnDrive)btnDrive.className="pop-mode"+(mode==="driving"?" on":"");
-}
-function executeRouteOSRM(start,dest,destName,startName,mode,stopData){
- currentNav.startCoord=start;currentNav.startName=startName;currentNav.mode=mode;
- var osrmProfile=mode==="driving"?"driving":"foot";
- var url="https://router.project-osrm.org/route/v1/"+osrmProfile+"/"+start[1]+","+start[0]+";"+dest[1]+","+dest[0]+"?overview=full&geometries=geojson";
- fetch(url).then(function(r){return r.json()}).then(function(data){
-  if(!data||!data.routes||!data.routes.length)throw new Error("No route");
-  var route=data.routes[0];
-  var coords=route.geometry.coordinates.map(function(pt){return [pt[1],pt[0]]});
-  renderNavRouteOnMap(coords,start,dest,startName,destName);
-  var distM=route.distance;
-  /* Jalan kaki: ~4.8 km/jam (1.33 m/s). Motor/Mobil di Bali: ~28 km/jam (7.8 m/s) + buffer lalu lintas */
-  var durSec=mode==="foot"?Math.round(distM/1.33):Math.max(60,Math.round((distM/7.8)+45));
-  updateNavCardUI(distM,durSec,destName,startName,mode,stopData);
- }).catch(function(err){
-  var straight=[start,dest],distM=map.distance(start,dest);
-  var durSec=mode==="foot"?Math.round(distM/1.33):Math.max(60,Math.round((distM/7.8)+45));
-  renderNavRouteOnMap(straight,start,dest,startName,destName);
-  updateNavCardUI(distM,durSec,destName,startName,mode,stopData);
- });
-}
-function navRouteTo(idx,forceMode){
- var S=D[cor][dir];if(!S||!S[idx]||!S[idx][1])return;
- var s=S[idx],dest=[s[1],s[2]],destName=(idx+1)+". "+s[0];
- var mode=(forceMode===1||forceMode==="driving")?"driving":(forceMode===0||forceMode==="foot")?"foot":(currentNav.mode||"foot");
- currentNav.stopIndex=idx;currentNav.destCoord=dest;currentNav.destName=destName;currentNav.mode=mode;
- if(innerWidth<=760&&typeof size==="function")size("min");
- document.querySelectorAll(".mk.nav-dest").forEach(function(e){e.classList.remove("nav-dest")});
- if(mk[idx]&&mk[idx]._icon){var mkDiv=mk[idx]._icon.querySelector(".mk");if(mkDiv)mkDiv.classList.add("nav-dest")}
- var timeEl=document.getElementById("popRouteTime");if(timeEl)timeEl.textContent="Menghitung rute…";
- getUserOrFallbackLocation(function(originCoord,originLabel){
-  var d=map.distance(originCoord,dest);
-  if(d<=80000){
-   if(me)me.setLatLng(originCoord);else me=L.marker(originCoord,{icon:L.divIcon({className:"",html:'<div class="me"></div>',iconSize:[18,18]}),zIndexOffset:2000}).addTo(map);
-   me.bindPopup("<b>"+esc(originLabel)+"</b><br><small>Titik acuan rute ke halte</small>");
-   executeRouteOSRM(originCoord,dest,destName,originLabel,mode,s);
-  }else{
-   var st0=[S[0][1],S[0][2]];
-   executeRouteOSRM(st0,dest,destName,S[0][0],mode,s);
-  }
- });
-}
-window.navRouteTo=navRouteTo;window.clearNavRoute=clearNavRoute;
-/* Otomatis aktifkan lokasi jika pernah disimpan dari beranda (dalam 6 jam terakhir) */
-try{
- var savedLat=parseFloat(localStorage.getItem("sarbagita-user-lat")),savedLng=parseFloat(localStorage.getItem("sarbagita-user-lng")),savedT=parseInt(localStorage.getItem("sarbagita-user-time")||"0",10);
- if(Number.isFinite(savedLat)&&Number.isFinite(savedLng)&&Date.now()-savedT<21600000){
-  window.userPos=[savedLat,savedLng];window.userPosLabel="Lokasi Anda";
-  if(me)me.setLatLng(window.userPos);else me=L.marker(window.userPos,{icon:L.divIcon({className:"",html:'<div class="me"></div>',iconSize:[18,18]}),zIndexOffset:2000}).addTo(map).bindPopup("<b>Lokasi Anda</b>");
- }
-}catch(e){}
 tabs();draw();fit();
 /* Buka halte tertentu dari tautan beranda: peta?d=a&s=12 */
-try{var SI=QS&&QS.get("s");if(SI!==null&&SI!==""&&mk[+SI]){mark(+SI);map.setView(mk[+SI].getLatLng(),16);setTimeout(function(){mk[+SI].openPopup();if(QS.get("nav"))window.navRouteTo(+SI)},350)}}catch(e){}
+var hasStopTarget=false;
+try{var SI=QS&&QS.get("s");if(SI!==null&&SI!==""&&mk[+SI]){hasStopTarget=true;mark(+SI);map.setView(mk[+SI].getLatLng(),16);setTimeout(function(){mk[+SI].openPopup()},300)}}catch(e){}
+/* Lokasi yang sudah disetujui di Beranda dipakai ulang pada Peta hingga enam jam. */
+var savedMapLocation=readSessionLocation();if(savedMapLocation)showUserLocationOnMap([savedMapLocation.lat,savedMapLocation.lng],!hasStopTarget);
 </script><script>
 /* === Bahasa Inggris (EN): menerjemahkan teks di layar tanpa mengubah kode lain.
    Nama halte tidak diterjemahkan. Pilihan disimpan di localStorage "sarbagita-lang". === */
@@ -843,7 +737,7 @@ try{var SI=QS&&QS.get("s");if(SI!==null&&SI!==""&&mk[+SI]){mark(+SI);map.setView
 var LK="sarbagita-lang",ON=false,TI=document.title,
  EX={"Halte":"Stops","Peta":"Map","Beranda":"Home","dan":"and","Daftar Halte":"Stop list","Lokasi Anda":"Your location","Halte awal":"First stop","Halte akhir":"Last stop","Coba kata kunci lain.":"Try another keyword."},
  T=[
- ["Rute Menuju Halte","Route to Stop"],["Menghitung rute…","Calculating route…"],["Jalan","Walk"],["Kendaraan","Drive"],["Motor/Mobil","Ride/Drive"],["Tutup Rute","Close Route"],["Dari: Lokasi Anda","From: Your location"],["Dari: ","From: "],["Titik Awal Rute","Route Starting Point"],["Jalur resmi","Official route"],["Jalur alternatif GPS","GPS alternative route"],
+ ["Jalur resmi","Official route"],["Jalur alternatif GPS","GPS alternative route"],
  ["Belum ada bus terdeteksi","No buses detected"],[/^([0-9]+) bus Sarbagita aktif$/,"$1 active Sarbagita buses"],[" di rute ini"," on this route"],["Di luar jam layanan","Outside service hours"],["Lokasi bus disembunyikan sampai layanan dimulai.","Bus locations are hidden until service starts."],["Layanan bus hari ini sudah berakhir","Bus service has ended for today"],["Bus mulai beroperasi hari ini pukul","Bus service starts today at"],[/^Posisi bus realtime tersedia mulai pukul (.+) WITA\. Lokasi halte dan jadwal tetap bisa dicek\.$/,"Live bus locations will be available from $1 WITA. Stops and timetable remain available."],[/^Mulai lagi besok pukul (.+) WITA\. Lokasi halte dan jadwal tetap bisa dicek\.$/,"Service resumes tomorrow at $1 WITA. Stops and timetable remain available."],["Posisi GPS bus sudah usang","GPS bus position is stale"],["Bus disembunyikan karena pembaruan lebih dari 10 menit.","Bus hidden because the last update is over 10 minutes old."],["Tujuan:","Destination:"],["Kecepatan:","Speed:"],["● GPS aktif · posisi diperbarui berkala","● GPS active · positions update periodically"],["Data GPS tidak diperbarui","GPS data is out of date"],["Mencoba menyambungkan ulang…","Trying to reconnect…"],["Menghubungkan ke GPS bus","Connecting to bus GPS"],["Mengambil posisi bus…","Loading bus positions…"],["GPS realtime","Live GPS"],
  ["jalur perkiraan","approximate path"], ["Bus berikutnya berangkat pukul ","Next bus leaves at "],["Bus berikutnya lewat sekitar ","Next bus passes around "],["Bus berikutnya tiba sekitar ","Next bus arrives around "],["Bus berikutnya berangkat sekitar ","Next bus leaves around "],["Bus hari ini sudah habis. Besok bus pertama berangkat sekitar ","No more buses today. Tomorrow's first bus leaves around "],["Bus hari ini sudah habis. Besok bus pertama berangkat pukul ","No more buses today. Tomorrow's first bus leaves at "],["Bus hari ini sudah habis. Besok bus pertama lewat sekitar ","No more buses today. Tomorrow's first bus passes around "],["Bus hari ini sudah habis. Besok bus pertama tiba sekitar ","No more buses today. Tomorrow's first bus arrives around "],[/^ \((.+) lagi\)/," (in $1)"],[" (sekarang)"," (now)"],["perkiraan dari jadwal, bukan GPS","estimated from the timetable, not GPS"],[/(\d+) jam/g,"$1 h"],[/(\d+) menit/g,"$1 min"],
  ["Peta halte bus listrik Trans Sarbagita di Bali: Koridor 1 GOR Ngurah Rai–GWK. Lokasi halte mengacu pada peta resmi","Map of Trans Sarbagita electric bus stops in Bali: Corridor 1 GOR Ngurah Rai–GWK. Stop locations follow the official map of"],
@@ -856,7 +750,7 @@ var LK="sarbagita-lang",ON=false,TI=document.title,
  ["Perkiraan dari jadwal, bukan posisi GPS.","Estimated from the timetable, not GPS."],["Istirahat di GWK sebelum kembali","Resting at GWK before heading back"],
  ["Berangkat GOR","Leaves GOR"],["kembali di GOR","back at GOR"],["Menuju ","Heading to "],
  ["Peta halte bus listrik Trans Sarbagita di Bali: Koridor 1 GOR Ngurah Rai–GWK. Beberapa koordinat halte merupakan perkiraan; lihat bagian sumber data untuk rinciannya.","Map of Trans Sarbagita electric bus stops in Bali: Corridor 1 GOR Ngurah Rai–GWK. Some stop coordinates are approximate; see data sources for details."],["koordinat belum ada · buka di Google Maps","no coordinates yet · open in Google Maps"],["lokasi perkiraan","approx. location"],["Halte tidak ditemukan.","No stops found."],
- ["Dishub Provinsi Bali","Bali Provincial Transport Agency (Dishub)"],["Buka di Google Maps","Open in Google Maps"],["Petunjuk arah","Directions"],["Halte awal","First stop"],["Halte akhir","Last stop"],
+ ["Dishub Provinsi Bali","Bali Provincial Transport Agency (Dishub)"],["Petunjuk arah ke halte ini di Google Maps","Directions to this stop in Google Maps"],["Buka lokasi halte ini di Google Maps","Open this stop in Google Maps"],["Rute","Route"],["Buka di Google Maps","Open in Google Maps"],["Petunjuk arah","Directions"],["Halte awal","First stop"],["Halte akhir","Last stop"],
  ["Izin lokasi tidak tersedia. Aktifkan izin lokasi di browser, atau ketuk halte di daftar untuk melihat jam bus berikutnya.","Location permission unavailable. Enable location access in your browser, or tap a stop in the list to see the next bus time."],
  ["Buka menu browser, lalu pilih “Instal aplikasi” atau “Tambahkan ke layar utama”.","Open the browser menu, then choose “Install app” or “Add to Home screen”."],
  ["Di iPhone/iPad: buka di Safari, ketuk tombol Bagikan, lalu pilih “Tambah ke Layar Utama”.","On iPhone/iPad: open in Safari, tap Share, then choose “Add to Home Screen”."],
