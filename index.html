@@ -529,7 +529,7 @@ $("useLocation").onclick=function(){locBusy(true);routeMessage("loading","Mencar
  if(!navigator.geolocation){locBusy(false);routeMessage("","Browser ini tidak mendukung akses lokasi. Pilih halte asal secara manual.");return}
  try{navigator.geolocation.getCurrentPosition(function(pos){var best=nearestStop(pos.coords.latitude,pos.coords.longitude,st.cor);locBusy(false);
   if(!best){routeMessage("","Belum ada data koordinat halte untuk koridor ini.");return}
-  $("sf").value=best.stop[0];st.hd=best.dir;nextBus();glowF($("sf"));locNote("📍 Terdekat dari lokasi Anda · "+distanceText(best.km));st.nr=[pos.coords.latitude,pos.coords.longitude];nearCard();routeMessage("ok","Halte terdekat ditemukan di bawah. Pilih tujuan jika ingin melihat rute.");var nc=$("near");if(nc.scrollIntoView)setTimeout(function(){nc.scrollIntoView({block:"nearest",behavior:"smooth"})},150);
+  $("sf").value=best.stop[0];st.hd=best.dir;nextBus();glowF($("sf"));locNote("📍 Terdekat dari lokasi Anda · "+distanceText(best.km));st.nr=[pos.coords.latitude,pos.coords.longitude];try{localStorage.setItem("sarbagita-user-lat",pos.coords.latitude);localStorage.setItem("sarbagita-user-lng",pos.coords.longitude);localStorage.setItem("sarbagita-user-time",Date.now())}catch(e){}nearCard();routeMessage("ok","Halte terdekat ditemukan di bawah. Pilih tujuan jika ingin melihat rute.");var nc=$("near");if(nc.scrollIntoView)setTimeout(function(){nc.scrollIntoView({block:"nearest",behavior:"smooth"})},150);
  },function(err){locBusy(false);var msg=err&&err.code===1?"Izin lokasi ditolak. Izinkan akses lokasi di browser, atau pilih halte asal secara manual.":err&&err.code===3?"Pencarian lokasi melewati batas waktu. Coba lagi atau pilih halte asal.":"Lokasi tidak tersedia. Coba lagi atau pilih halte asal.";routeMessage("",msg)},{enableHighAccuracy:true,timeout:15000,maximumAge:60000})}
  catch(e){locBusy(false);routeMessage("","Lokasi tidak dapat digunakan. Pilih halte asal secara manual.")}};
 
@@ -647,7 +647,7 @@ function nearCard(){var c=$("near");if(!st.nr||typeof SJ==="undefined"){c.hidden
   L.forEach(function(s,i){if(!s[1]||i===L.length-1)return;var km=distanceKm(la,lo,s[1],s[2]);if(km<bk){bk=km;best=i}});
   if(best<0)return;far=Math.min(far,bk);var s=L[best];
   h+='<div class="nri"><div class="nrt"><span class="nrd">Arah '+(d==="a"?"GWK":"Kota")+'</span><b>'+s[0]+'</b> <small>· '+distanceText(bk)+'</small></div>'+nbLine(d,best)
-   +'<div class="nra"><a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination='+s[1]+','+s[2]+'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a><a class="alt" href="peta?c=c1&amp;d='+d+'&amp;s='+best+'"><svg class="ic" viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg> Lihat di peta</a></div></div>'});
+   +'<div class="nra"><a href="peta?c=c1&amp;d='+d+'&amp;s='+best+'&amp;nav=1"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a><a class="alt" href="peta?c=c1&amp;d='+d+'&amp;s='+best+'"><svg class="ic" viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg> Lihat di peta</a></div></div>'});
  if(far>5)h+='<div class="nrn">Anda cukup jauh dari rute ini ('+distanceText(far)+').</div>';
  h+='<div class="nrn">Mau ke halte tertentu? Pilih tujuan di atas, lalu tekan Lihat rute.</div>';
  c.innerHTML=h;c.hidden=false;c.querySelector(".nrx").onclick=function(){st.nr=null;c.hidden=true}}
