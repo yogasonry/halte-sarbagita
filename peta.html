@@ -155,6 +155,51 @@ button,input{font:inherit;color:inherit}
 .leaflet-popup-content .bus-pop-name,.leaflet-popup-content .bus-pop-live{color:#16a34a!important}
 .leaflet-popup-content .bus-pop-name{font-size:.72rem;font-weight:700;margin-bottom:4px}
 .leaflet-popup-content .bus-pop-detail{font-size:.78rem;color:var(--tx)!important;margin-bottom:2px}
+/* In-App Route / Navigation Card */
+#navCard{position:fixed;z-index:560;top:calc(76px + env(safe-area-inset-top,0px));left:14px;width:380px;max-width:calc(100% - 28px);border-radius:20px;padding:12px 15px;animation:navSlideIn .3s cubic-bezier(.16,1,.3,1)}
+@keyframes navSlideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.nav-card-inner{display:flex;flex-direction:column;gap:8px}
+.nav-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.nav-card-title{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.nav-ic-box{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--b),var(--b2));display:grid;place-items:center;color:#fff;flex:none;box-shadow:0 4px 12px -2px rgba(10,120,230,.4)}
+.nav-dest-wrap{min-width:0;flex:1}
+.nav-label{display:block;font-size:.7rem;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.03em}
+.nav-dest{display:block;font-size:.92rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-close{width:30px;height:30px;border-radius:9px;border:1px solid var(--ln);background:var(--soft);color:var(--mut);display:grid;place-items:center;cursor:pointer;flex:none;transition:background .2s,color .2s}
+.nav-close:hover{background:var(--card);color:var(--tx)}
+.nav-close .ic{width:16px;height:16px}
+.nav-card-stats{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 11px;border-radius:13px;background:var(--card);border:1px solid var(--ln)}
+.nav-stat-time{display:flex;align-items:baseline;gap:6px;min-width:0}
+.nav-time{font-size:1.1rem;font-weight:800;color:var(--b)}
+.nav-dist{font-size:.8rem;font-weight:600;color:var(--mut)}
+.nav-mode-toggle{display:inline-flex;background:var(--soft);border-radius:9px;padding:2px;gap:2px}
+.nav-mode{border:none;border-radius:7px;padding:5px 8px;background:none;color:var(--mut);font-size:.74rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all .18s;font-family:inherit}
+.nav-mode svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nav-mode.on{background:var(--b);color:#fff;box-shadow:0 2px 8px -1px rgba(10,120,230,.5)}
+.nav-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.74rem;color:var(--mut)}
+.nav-from{display:inline-flex;align-items:center;gap:6px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-from-dot{width:7px;height:7px;border-radius:50%;background:#10b981;flex:none}
+.nav-gmaps-link{color:var(--b);text-decoration:none;font-weight:600;white-space:nowrap}
+.nav-gmaps-link:hover{text-decoration:underline}
+.nav-pin-start{width:22px;height:22px;border-radius:50%;background:#10b981;color:#fff;font:800 10px/22px "Plus Jakarta Sans",sans-serif;text-align:center;border:2.5px solid #fff;box-shadow:0 3px 8px rgba(16,185,129,.5)}
+.mk.nav-dest{box-shadow:0 0 0 4px #10b981,0 6px 20px rgba(16,185,129,.5)!important;transform:scale(1.25)!important;z-index:9999!important}
+.leaflet-popup-content .gm{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 12px;border-radius:10px;background:var(--b);color:#fff!important;border:none;cursor:pointer;font-weight:600;font-size:.8rem;font-family:inherit;text-decoration:none;-webkit-appearance:none;appearance:none;transition:transform .15s,filter .15s}
+.leaflet-popup-content .gm:active{transform:scale(.96)}
+.leaflet-popup-content .gm:hover{filter:brightness(1.1)}
+.leaflet-popup-content a.gm.alt{background:var(--bs);color:var(--b)!important}
+
+:root[data-visual-preset="vice-city"] #navCard{border-color:rgba(255,45,196,.5);box-shadow:0 0 24px rgba(255,45,196,.2),0 0 40px rgba(0,220,255,.1)}
+:root[data-visual-preset="vice-city"] .nav-ic-box{background:linear-gradient(135deg,#ff2dc4,#00f0ff);box-shadow:0 0 15px rgba(255,45,196,.6)}
+:root[data-visual-preset="vice-city"] .nav-time{color:#00f0ff;text-shadow:0 0 10px rgba(0,240,255,.5)}
+:root[data-visual-preset="vice-city"] .nav-mode.on{background:linear-gradient(135deg,#ff2dc4,#7928ca);box-shadow:0 0 12px rgba(255,45,196,.6);color:#fff}
+:root[data-visual-preset="vice-city"] .nav-gmaps-link{color:#ff2dc4}
+:root[data-visual-preset="vice-city"] .mk.nav-dest{box-shadow:0 0 0 4px #00f0ff,0 0 20px rgba(0,240,255,.8)!important}
+
+@media (max-width:760px){
+  #navCard{top:calc(64px + env(safe-area-inset-top,0px));left:10px;right:10px;width:auto;padding:11px 13px}
+  .nav-dest{font-size:.86rem}
+  .nav-time{font-size:1.02rem}
+}
 .leaflet-popup-content .bus-pop-detail b{display:inline;font-size:inherit;margin:0;color:inherit}
 .leaflet-popup-content .bus-pop-meta{font-size:.7rem;color:var(--mut)!important;margin-top:4px;border-top:1px solid var(--ln);padding-top:4px}
 :root[data-theme="dark"] .leaflet-popup-content .bus-pop,:root[data-theme="dark"] .leaflet-popup-content .bus-pop-head,:root[data-theme="dark"] .leaflet-popup-content .bus-pop-plate,:root[data-theme="dark"] .leaflet-popup-content .bus-pop-detail,:root[data-theme="dark"] .leaflet-popup-content .bus-pop-detail b{color:#f1f5f9!important}
@@ -219,6 +264,41 @@ button,input{font:inherit;color:inherit}
  </div>
  <div id="ls"></div>
 </aside>
+<!-- Kartu Navigasi Rute In-App -->
+<div id="navCard" class="nav-card glass" hidden>
+ <div class="nav-card-inner">
+  <div class="nav-card-header">
+   <div class="nav-card-title">
+    <div class="nav-ic-box"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg></div>
+    <div class="nav-dest-wrap">
+     <span class="nav-label">Rute Menuju Halte</span>
+     <b id="navDestName" class="nav-dest">Halte</b>
+    </div>
+   </div>
+   <button type="button" id="navCloseBtn" class="nav-close" title="Tutup Rute" aria-label="Tutup Rute"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="nav-card-stats">
+   <div class="nav-stat-time">
+    <span id="navTime" class="nav-time">Menghitung rute…</span>
+    <span id="navDist" class="nav-dist"></span>
+   </div>
+   <div class="nav-mode-toggle">
+    <button type="button" id="navModeFoot" class="nav-mode on" title="Jalan Kaki">
+     <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M10 22v-5l-2-3 2-4 2 3v9M14 10l2 4-2 3v5"/></svg>
+     <span>Jalan</span>
+    </button>
+    <button type="button" id="navModeDrive" class="nav-mode" title="Kendaraan">
+     <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="8" rx="2"/><path d="M7 11V7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4M7 15h.01M17 15h.01"/></svg>
+     <span>Motor/Mobil</span>
+    </button>
+   </div>
+  </div>
+  <div class="nav-card-footer">
+   <span id="navFromLabel" class="nav-from"><span class="nav-from-dot"></span>Dari: Lokasi Anda</span>
+   <a id="navGmapsLink" class="nav-gmaps-link" target="_blank" rel="noopener" href="#">Buka di Google Maps ↗</a>
+  </div>
+ </div>
+</div>
 <div id="toast" class="glass" role="status" hidden></div>
 <div id="fab">
  <button class="glass inst instb" id="ins" type="button" aria-label="Pasang aplikasi" title="Pasang aplikasi" hidden><svg class="ic" viewBox="0 0 24 24"><path d="M12 4v11M12 15l-4-4M12 15l4-4M5 20h14"/></svg></button>
@@ -250,7 +330,7 @@ function tiles(){var TILES={
  maptiler:{u:"https://api.maptiler.com/maps/"+(dark?"streets-v2-dark":"streets-v2")+"/256/{z}/{x}/{y}.png?key="+KEY,o:{maxZoom:20,attribution:"&copy; MapTiler &copy; OpenStreetMap"}}
  },T=TILES[PROVIDER];if(TL&&PROVIDER==="osm")return;if(TL)map.removeLayer(TL);TL=L.tileLayer(T.u,T.o).addTo(map)}
 tiles();
-var lg=L.layerGroup().addTo(map),g=L.layerGroup().addTo(map),me=null,mk={};
+var lg=L.layerGroup().addTo(map),g=L.layerGroup().addTo(map),navLayer=L.layerGroup().addTo(map),me=null,mk={};
 var N={c1:["Sarbagita · S1B","Arah: GWK","Arah: GOR Ngurah Rai"],c2:["Koridor 2","Kota → Nusa Dua","Nusa Dua → Kota"]};
 var EXT='<svg class="ic" viewBox="0 0 24 24" style="width:15px;height:15px"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
 function $(i){return document.getElementById(i)}
@@ -607,16 +687,16 @@ function draw(){
       '<div style="margin-top:3px;opacity:.85">Arah: <b>'+esc(arahNama)+'</b>'+(statusBadge?' · <i>'+statusBadge+'</i>':'')+'</div>'+
      '</div>'+
      nbP(dd,i)+
-     '<a class="gm" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination='+s[1]+','+s[2]+'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a> '+
+     '<button type="button" class="gm" onclick="window.navRouteTo('+i+');return false;"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</button> '+
      '<a class="gm alt" target="_blank" rel="noopener" href="'+gm(s)+'">'+EXT+' Buka di Google Maps</a>';
    });
-   m.on("click",function(){mark(i)});mk[i]=m}
+   m.on("click",function(){mark(i);window.navRouteTo(i)});mk[i]=m}
   if(q&&s[0].toLowerCase().indexOf(q)<0)return;n++;
   var d=document.createElement("div");d.className="it"+(i==0?" f":"")+(i==S.length-1?" l":"")+(i===sel?" sel":"");d.dataset.i=i;d.tabIndex=0;d.setAttribute("role","button");d.onkeydown=function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();d.onclick()}};
   d.innerHTML='<span class="n">'+(i+1)+'</span><span class="ext">'+(s[1]?"":EXT)+'</span><div class="nm">'+esc(s[0])+
    '<div style="font-size:11px;opacity:.8;font-weight:500;margin-top:2px"><b style="color:var(--b)">Sarbagita · S1B</b> · Arah: '+esc(arahNama)+(statusBadge?' · <i>'+statusBadge+'</i>':'')+'</div>'+
   '</div>';
-  d.onclick=function(){if(mk[i]){mark(i);map.flyTo(mk[i].getLatLng(),16,{duration:.8});mk[i].openPopup();if(innerWidth<=760)size("min")}else window.open(gm(s),"_blank","noopener")};
+  d.onclick=function(){if(mk[i]){mark(i);map.flyTo(mk[i].getLatLng(),16,{duration:.8});mk[i].openPopup();if(innerWidth<=760)size("min");window.navRouteTo(i)}else window.open(gm(s),"_blank","noopener")};
   ls.appendChild(d)});
  $("cnt").textContent=(q?n+" / ":"")+S.length+" halte";
  if(!n)ls.innerHTML='<div class="empty">Halte tidak ditemukan.<br><small>Coba kata kunci lain.</small></div>';
@@ -624,6 +704,7 @@ function draw(){
 function mark(i){sel=i;document.querySelectorAll(".it").forEach(function(e){var on=+e.dataset.i===i;e.classList.toggle("sel",on);if(on&&e.scrollIntoView)e.scrollIntoView({block:"nearest",behavior:"smooth"})})}
 function seg(id,items,cur,fn){var c=$(id);c.innerHTML="";items.forEach(function(x){var b=document.createElement("button");b.type="button";b.textContent=x[1];b.className=cur==x[0]?"on":"";b.setAttribute("aria-pressed",cur==x[0]);b.onclick=function(){fn(x[0])};c.appendChild(b)})}
 function tabs(){
+ if(window.clearNavRoute)clearNavRoute();
  var ci=[["c1",N.c1[0]],["c2",N.c2[0]]].filter(function(x){return D[x[0]]});$("ct").hidden=ci.length<2;seg("ct",ci,cor,function(k){if(k==cor)return;cor=k;dir="a";sel=-1;tabs();draw();fit()});
  seg("tb",[["a",N[cor][1]],["b",N[cor][2]]],dir,function(k){dir=k;sel=-1;tabs();draw();fit()})}
 /* bottom sheet (mobile) */
@@ -649,12 +730,38 @@ $("q").onfocus=function(){if(innerWidth<=760)size("max")};
 $("q").oninput=draw;$("fit").onclick=fit;
 $("viceThemeBtnMap").onclick=function(){setMapPreset(!VICE_CITY_ENABLED,true)};$("th").onclick=function(){var nextMode=!modeDark;restoreClassicPreset();modeDark=nextMode;var r=document.documentElement;if(modeDark)r.setAttribute("data-theme","dark");else r.removeAttribute("data-theme");sgtSave(modeDark);dark=VICE_CITY_ENABLED||modeDark;syncModeButton();syncPresetButton();setFavicon();tiles();draw()};
 function autoTheme(){var dk=sgtTheme();if(dk!==modeDark){modeDark=dk;var r=document.documentElement;if(modeDark)r.setAttribute("data-theme","dark");else r.removeAttribute("data-theme");dark=VICE_CITY_ENABLED||modeDark;syncModeButton();setFavicon();tiles();draw()}}setInterval(autoTheme,60000);document.addEventListener("visibilitychange",function(){if(!document.hidden)autoTheme()});
-$("loc").onclick=function(){if(!navigator.geolocation)return toast("Lokasi tidak didukung di perangkat ini.");
- navigator.geolocation.getCurrentPosition(function(p){var ll=[p.coords.latitude,p.coords.longitude];
-  if(me)me.setLatLng(ll);else me=L.marker(ll,{icon:L.divIcon({className:"",html:'<div class="me"></div>',iconSize:[18,18]}),zIndexOffset:2000}).addTo(map).bindPopup("<b>Lokasi Anda</b>");
-  var S=D[cor][dir],best=-1,bd=1e9;S.forEach(function(s,i){if(!s[1])return;var d=map.distance(ll,[s[1],s[2]]);if(d<bd){bd=d;best=i}});
-  if(best>=0&&bd<40000){map.flyToBounds(L.latLngBounds([ll,[S[best][1],S[best][2]]]),{padding:[80,80],maxZoom:16});mark(best);mk[best].openPopup()}else{map.flyTo(ll,14);me.openPopup()}
- },function(){toast("Izin lokasi tidak tersedia. Aktifkan izin lokasi di browser, atau ketuk halte di daftar untuk melihat jam bus berikutnya.")},{timeout:10000})};
+function getUserOrFallbackLocation(onComplete){
+ if(window.userPos&&window.userPos.length===2){onComplete(window.userPos,window.userPosLabel||"Lokasi Anda");return}
+ function fallbackIpOrTerminus(){
+  fetch("https://ipwho.is/").then(function(r){return r.json()}).then(function(res){
+   if(res&&res.success&&res.latitude&&res.longitude){
+    var ll=[res.latitude,res.longitude];window.userPos=ll;window.userPosLabel="Denpasar ("+(res.city||"Jaringan")+")";
+    onComplete(ll,window.userPosLabel);
+   }else{var S=D[cor][dir],st0=[S[0][1],S[0][2]];onComplete(st0,S[0][0])}
+  }).catch(function(){var S=D[cor][dir],st0=[S[0][1],S[0][2]];onComplete(st0,S[0][0])});
+ }
+ if(navigator.geolocation){
+  navigator.geolocation.getCurrentPosition(function(p){
+   var ll=[p.coords.latitude,p.coords.longitude];
+   window.userPos=ll;window.userPosLabel="Lokasi Anda";
+   onComplete(ll,"Lokasi Anda");
+  },function(){
+   fallbackIpOrTerminus();
+  },{enableHighAccuracy:false,timeout:3500,maximumAge:180000});
+ }else{fallbackIpOrTerminus()}
+}
+
+$("loc").onclick=function(){
+ getUserOrFallbackLocation(function(ll,label){
+  if(me)me.setLatLng(ll);else me=L.marker(ll,{icon:L.divIcon({className:"",html:'<div class="me"></div>',iconSize:[18,18]}),zIndexOffset:2000}).addTo(map);
+  me.bindPopup("<b>"+esc(label)+"</b><br><small>Titik acuan rute ke halte</small>");
+  var S=D[cor][dir],best=-1,bd=1e9;
+  S.forEach(function(s,i){if(!s[1])return;var d=map.distance(ll,[s[1],s[2]]);if(d<bd){bd=d;best=i}});
+  if(best>=0&&bd<40000){map.flyToBounds(L.latLngBounds([ll,[S[best][1],S[best][2]]]),{padding:[80,80],maxZoom:16});mark(best);mk[best].openPopup()}
+  else{map.flyTo(ll,14);me.openPopup()}
+  if(label.indexOf("Denpasar")>=0)toast("📍 Menampilkan lokasi perkiraan Denpasar (jaringan)");
+ });
+};
 /* === PWA: service worker + tombol pasang === */
 var dp=null,isApp=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;
 if("serviceWorker" in navigator&&location.protocol!=="file:")window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).catch(function(){})});
@@ -669,9 +776,93 @@ function instGo(){
  else m="Buka menu browser, lalu pilih \u201cInstal aplikasi\u201d atau \u201cTambahkan ke layar utama\u201d.";
  toast(m)}
 document.querySelectorAll(".instb").forEach(function(b){b.onclick=instGo});instUI();
+/* === IN-APP ROUTE / NAVIGASI SEPERTI GOOGLE MAPS === */
+var currentNav={stopIndex:-1,mode:"foot",destCoord:null,destName:"",startCoord:null,startName:"Lokasi Anda"};
+function formatDist(m){if(m<1000)return Math.round(m)+" m";return (m/1000).toFixed(1).replace(".",",")+" km"}
+function formatDuration(sec){var m=Math.round(sec/60);if(m<1)return "< 1 mnt";if(m<60)return m+" mnt";var h=Math.floor(m/60),rm=m%60;return h+" jam"+(rm?" "+rm+" mnt":"")}
+function clearNavRoute(){
+ navLayer.clearLayers();currentNav.stopIndex=-1;currentNav.destCoord=null;
+ var card=document.getElementById("navCard");if(card)card.hidden=true;
+ document.querySelectorAll(".mk.nav-dest").forEach(function(e){e.classList.remove("nav-dest")});
+}
+function renderNavRouteOnMap(coords,start,dest,startName,destName){
+ navLayer.clearLayers();
+ var isVc=typeof VICE_CITY_ENABLED!=="undefined"&&VICE_CITY_ENABLED;
+ var casingColor=(isVc||dark)?"#070b14":"#ffffff";
+ var lineColor=isVc?"#00f0ff":"#1a73e8";
+ L.polyline(coords,{color:casingColor,weight:9,opacity:.9,lineCap:"round",lineJoin:"round"}).addTo(navLayer);
+ L.polyline(coords,{color:lineColor,weight:5.5,opacity:.98,lineCap:"round",lineJoin:"round"}).addTo(navLayer);
+ if(!me||map.distance(start,me.getLatLng())>15){
+  L.marker(start,{icon:L.divIcon({className:"",html:'<div class="nav-pin-start">A</div>',iconSize:[22,22],iconAnchor:[11,11]}),zIndexOffset:1200}).bindPopup("<b>"+esc(startName)+"</b><br><small>Titik Awal Rute</small>").addTo(navLayer);
+ }
+ var b=L.latLngBounds(coords);
+ var pad=innerWidth<=760?[35,35]:[70,70];
+ map.fitBounds(b,{padding:pad,maxZoom:16});
+}
+function updateNavCardUI(distMeters,durSec,destName,startName,mode,stopData){
+ var card=document.getElementById("navCard");if(!card)return;card.hidden=false;
+ document.getElementById("navDestName").textContent=destName;
+ document.getElementById("navTime").textContent=formatDuration(durSec);
+ document.getElementById("navDist").textContent="("+formatDist(distMeters)+")";
+ document.getElementById("navFromLabel").innerHTML='<span class="nav-from-dot"></span>Dari: '+esc(startName);
+ var btnFoot=document.getElementById("navModeFoot"),btnDrive=document.getElementById("navModeDrive");
+ if(btnFoot)btnFoot.className="nav-mode"+(mode==="foot"?" on":"");
+ if(btnDrive)btnDrive.className="nav-mode"+(mode==="driving"?" on":"");
+ var gmLink=document.getElementById("navGmapsLink");
+ if(gmLink&&stopData&&stopData[1]){
+  gmLink.href="https://www.google.com/maps/dir/?api=1&destination="+stopData[1]+","+stopData[2];
+ }
+}
+function executeRouteOSRM(start,dest,destName,startName,mode,stopData){
+ currentNav.startCoord=start;currentNav.startName=startName;currentNav.mode=mode;
+ var osrmProfile=mode==="driving"?"driving":"foot";
+ var url="https://router.project-osrm.org/route/v1/"+osrmProfile+"/"+start[1]+","+start[0]+";"+dest[1]+","+dest[0]+"?overview=full&geometries=geojson";
+ fetch(url).then(function(r){return r.json()}).then(function(data){
+  if(!data||!data.routes||!data.routes.length)throw new Error("No route");
+  var route=data.routes[0];
+  var coords=route.geometry.coordinates.map(function(pt){return [pt[1],pt[0]]});
+  renderNavRouteOnMap(coords,start,dest,startName,destName);
+  var distM=route.distance;
+  /* Jalan kaki: ~4.8 km/jam (1.33 m/s). Motor/Mobil di Bali: ~28 km/jam (7.8 m/s) + buffer lalu lintas */
+  var durSec=mode==="foot"?Math.round(distM/1.33):Math.max(60,Math.round((distM/7.8)+45));
+  updateNavCardUI(distM,durSec,destName,startName,mode,stopData);
+ }).catch(function(err){
+  var straight=[start,dest],distM=map.distance(start,dest);
+  var durSec=mode==="foot"?Math.round(distM/1.33):Math.max(60,Math.round((distM/7.8)+45));
+  renderNavRouteOnMap(straight,start,dest,startName,destName);
+  updateNavCardUI(distM,durSec,destName,startName,mode,stopData);
+ });
+}
+function navRouteTo(idx,forceMode){
+ var S=D[cor][dir];if(!S||!S[idx]||!S[idx][1])return;
+ var s=S[idx],dest=[s[1],s[2]],destName=(idx+1)+". "+s[0];
+ var mode=forceMode||currentNav.mode||"foot";
+ currentNav.stopIndex=idx;currentNav.destCoord=dest;currentNav.destName=destName;currentNav.mode=mode;
+ if(innerWidth<=760&&typeof size==="function")size("min");
+ document.querySelectorAll(".mk.nav-dest").forEach(function(e){e.classList.remove("nav-dest")});
+ if(mk[idx]&&mk[idx]._icon){var mkDiv=mk[idx]._icon.querySelector(".mk");if(mkDiv)mkDiv.classList.add("nav-dest")}
+ var card=document.getElementById("navCard");if(card){
+  card.hidden=false;document.getElementById("navDestName").textContent=destName;document.getElementById("navTime").textContent="Menghitung rute…";document.getElementById("navDist").textContent="";document.getElementById("navFromLabel").innerHTML='<span class="nav-from-dot"></span>Menyiapkan rute…';
+ }
+ getUserOrFallbackLocation(function(originCoord,originLabel){
+  var d=map.distance(originCoord,dest);
+  if(d<=80000){
+   if(me)me.setLatLng(originCoord);else me=L.marker(originCoord,{icon:L.divIcon({className:"",html:'<div class="me"></div>',iconSize:[18,18]}),zIndexOffset:2000}).addTo(map);
+   me.bindPopup("<b>"+esc(originLabel)+"</b><br><small>Titik acuan rute ke halte</small>");
+   executeRouteOSRM(originCoord,dest,destName,originLabel,mode,s);
+  }else{
+   var st0=[S[0][1],S[0][2]];
+   executeRouteOSRM(st0,dest,destName,S[0][0],mode,s);
+  }
+ });
+}
+window.navRouteTo=navRouteTo;window.clearNavRoute=clearNavRoute;
+document.getElementById("navCloseBtn").onclick=function(){clearNavRoute()};
+document.getElementById("navModeFoot").onclick=function(){if(currentNav.stopIndex>=0)navRouteTo(currentNav.stopIndex,"foot")};
+document.getElementById("navModeDrive").onclick=function(){if(currentNav.stopIndex>=0)navRouteTo(currentNav.stopIndex,"driving")};
 tabs();draw();fit();
 /* Buka halte tertentu dari tautan beranda: peta?d=a&s=12 */
-try{var SI=QS&&QS.get("s");if(SI!==null&&SI!==""&&mk[+SI]){mark(+SI);map.setView(mk[+SI].getLatLng(),16);setTimeout(function(){mk[+SI].openPopup()},300)}}catch(e){}
+try{var SI=QS&&QS.get("s");if(SI!==null&&SI!==""&&mk[+SI]){mark(+SI);map.setView(mk[+SI].getLatLng(),16);setTimeout(function(){mk[+SI].openPopup();if(QS.get("nav"))window.navRouteTo(+SI)},350)}}catch(e){}
 </script><script>
 /* === Bahasa Inggris (EN): menerjemahkan teks di layar tanpa mengubah kode lain.
    Nama halte tidak diterjemahkan. Pilihan disimpan di localStorage "sarbagita-lang". === */
@@ -679,7 +870,7 @@ try{var SI=QS&&QS.get("s");if(SI!==null&&SI!==""&&mk[+SI]){mark(+SI);map.setView
 var LK="sarbagita-lang",ON=false,TI=document.title,
  EX={"Halte":"Stops","Peta":"Map","Beranda":"Home","dan":"and","Daftar Halte":"Stop list","Lokasi Anda":"Your location","Halte awal":"First stop","Halte akhir":"Last stop","Coba kata kunci lain.":"Try another keyword."},
  T=[
- ["Jalur resmi","Official route"],["Jalur alternatif GPS","GPS alternative route"],
+ ["Rute Menuju Halte","Route to Stop"],["Menghitung rute…","Calculating route…"],["Jalan","Walk"],["Kendaraan","Drive"],["Motor/Mobil","Ride/Drive"],["Tutup Rute","Close Route"],["Dari: Lokasi Anda","From: Your location"],["Dari: ","From: "],["Titik Awal Rute","Route Starting Point"],["Jalur resmi","Official route"],["Jalur alternatif GPS","GPS alternative route"],
  ["Belum ada bus terdeteksi","No buses detected"],[/^([0-9]+) bus Sarbagita aktif$/,"$1 active Sarbagita buses"],[" di rute ini"," on this route"],["Di luar jam layanan","Outside service hours"],["Lokasi bus disembunyikan sampai layanan dimulai.","Bus locations are hidden until service starts."],["Layanan bus hari ini sudah berakhir","Bus service has ended for today"],["Bus mulai beroperasi hari ini pukul","Bus service starts today at"],[/^Posisi bus realtime tersedia mulai pukul (.+) WITA\. Lokasi halte dan jadwal tetap bisa dicek\.$/,"Live bus locations will be available from $1 WITA. Stops and timetable remain available."],[/^Mulai lagi besok pukul (.+) WITA\. Lokasi halte dan jadwal tetap bisa dicek\.$/,"Service resumes tomorrow at $1 WITA. Stops and timetable remain available."],["Posisi GPS bus sudah usang","GPS bus position is stale"],["Bus disembunyikan karena pembaruan lebih dari 10 menit.","Bus hidden because the last update is over 10 minutes old."],["Tujuan:","Destination:"],["Kecepatan:","Speed:"],["● GPS aktif · posisi diperbarui berkala","● GPS active · positions update periodically"],["Data GPS tidak diperbarui","GPS data is out of date"],["Mencoba menyambungkan ulang…","Trying to reconnect…"],["Menghubungkan ke GPS bus","Connecting to bus GPS"],["Mengambil posisi bus…","Loading bus positions…"],["GPS realtime","Live GPS"],
  ["jalur perkiraan","approximate path"], ["Bus berikutnya berangkat pukul ","Next bus leaves at "],["Bus berikutnya lewat sekitar ","Next bus passes around "],["Bus berikutnya tiba sekitar ","Next bus arrives around "],["Bus berikutnya berangkat sekitar ","Next bus leaves around "],["Bus hari ini sudah habis. Besok bus pertama berangkat sekitar ","No more buses today. Tomorrow's first bus leaves around "],["Bus hari ini sudah habis. Besok bus pertama berangkat pukul ","No more buses today. Tomorrow's first bus leaves at "],["Bus hari ini sudah habis. Besok bus pertama lewat sekitar ","No more buses today. Tomorrow's first bus passes around "],["Bus hari ini sudah habis. Besok bus pertama tiba sekitar ","No more buses today. Tomorrow's first bus arrives around "],[/^ \((.+) lagi\)/," (in $1)"],[" (sekarang)"," (now)"],["perkiraan dari jadwal, bukan GPS","estimated from the timetable, not GPS"],[/(\d+) jam/g,"$1 h"],[/(\d+) menit/g,"$1 min"],
  ["Peta halte bus listrik Trans Sarbagita di Bali: Koridor 1 GOR Ngurah Rai–GWK. Lokasi halte mengacu pada peta resmi","Map of Trans Sarbagita electric bus stops in Bali: Corridor 1 GOR Ngurah Rai–GWK. Stop locations follow the official map of"],

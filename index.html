@@ -483,7 +483,7 @@ function rowH(s,i,lo,hi){
   '<div style="font-size:.76rem;opacity:.8;margin-top:2px"><b style="color:var(--b)">Sarbagita · S1B</b> · Arah: '+arahNama+(statusBadge?' · <i>'+statusBadge+'</i>':'')+'</div>';
  if(i===st.sel)h+='<div class="det">'+nbLine(st.dir,i)+
   '<div style="margin:5px 0 8px 0;font-size:.78rem"><span style="display:inline-block;padding:2px 7px;border-radius:6px;font-size:.72rem;font-weight:700;color:#fff;background:#0284c7">Sarbagita · S1B</span> <span>Koordinat halte: ('+s[1].toFixed(5)+', '+s[2].toFixed(5)+')</span></div>'+
-  '<a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination='+s[1]+','+s[2]+'"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a>'+
+  '<a href="peta?d='+st.dir+'&amp;s='+i+'&amp;nav=1"><svg class="ic" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg> Petunjuk arah</a>'+
   '<a class="alt" target="_blank" rel="noopener" href="'+gm(s)+'"><svg class="ic" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg> Buka di Google Maps</a></div>';
  return h+'</div>'}
 function homeList(){var c=$("allc");if(c)c.textContent="("+D[st.cor][st.dir].length+")"}
