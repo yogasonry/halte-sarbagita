@@ -628,12 +628,26 @@ var GPS_ALT_PATHS={c1:{a:[
  [-8.6645790,115.2182636],[-8.6655532,115.2181559],[-8.6668237,115.2180907],
  [-8.6680941,115.2180683],[-8.6689410,115.2180462]
 ]}};
-function gpsAltPath(c,d){var p=(GPS_ALT_PATHS[c]||{}).a;if(!p||c!=="c1"||(d!=="a"&&d!=="b"))return null;var out=p.slice();if(D[c].la&&D[c].la[5])out=out.concat(D[c].la[5].slice(20));if(d==="a")return out;var back=out.reverse(),gorRoad=D[c].la&&D[c].la[0];if(gorRoad)back=back.concat(gorRoad.slice(0,15).reverse());return back}
+/* Ruas utara arah GOR, didigitasi mengikuti garis merah pada sketsa pengguna. */
+var GOR_ROUTE_PATH=[
+ [-8.675605,115.215295],[-8.6749322,115.2155059],[-8.6719667,115.2155059],
+ [-8.6687894,115.2154842],[-8.665698,115.215386],[-8.6624347,115.2153544],
+ [-8.6603165,115.2151163],[-8.6590456,115.2147917],[-8.6588338,115.2154626],
+ [-8.6588126,115.2166096],[-8.6584101,115.2168693],[-8.6575628,115.217064],
+ [-8.656186,115.2170857],[-8.6563343,115.2183842],[-8.656131,115.219004],
+ [-8.6562496,115.219964],[-8.6552328,115.2200722],[-8.6539619,115.2201155],
+ [-8.652691,115.2201155],[-8.65142,115.220202],[-8.6506151,115.2205483],
+ [-8.64909,115.2209378],[-8.649398,115.223423]
+];
+function gpsAltPath(c,d){var p=(GPS_ALT_PATHS[c]||{}).a;if(!p||c!=="c1"||d!=="a")return null;var out=p.slice();if(D[c].la&&D[c].la[5])out=out.concat(D[c].la[5].slice(20));return out}
 function approxSegments(){return cor==="c1"&&dir==="b"?[]:(D[cor]["d"+dir]||[])}
 function draw(){
  g.clearLayers();lg.clearLayers();mk={};
  var S=D[cor][dir],lc=dark?"#4ade80":"#15803d",altColor=dark?"#86efac":"#16a34a",altPath=gpsAltPath(cor,dir);
- D[cor].line.concat(D[cor]["l"+dir]||[]).forEach(function(sg){L.polyline(sg,{color:"#fff",weight:10,opacity:dark?.15:.9}).addTo(lg);L.polyline(sg,{color:lc,weight:5,opacity:.9,lineCap:"round",lineJoin:"round"}).addTo(lg)});
+ var officialSegments=D[cor].line.concat(D[cor]["l"+dir]||[]);
+ // Ruas lama sisi timur tidak mengikuti koridor halte arah GOR.
+ if(cor==="c1"&&dir==="b"&&D[cor].lb){officialSegments=officialSegments.filter(function(sg){return sg!==D[cor].lb[2]&&sg!==D[cor].lb[3]});officialSegments.push(GOR_ROUTE_PATH)}
+ officialSegments.forEach(function(sg){L.polyline(sg,{color:"#fff",weight:10,opacity:dark?.15:.9}).addTo(lg);L.polyline(sg,{color:lc,weight:5,opacity:.9,lineCap:"round",lineJoin:"round"}).addTo(lg)});
  approxSegments().forEach(function(sg){L.polyline(sg,{color:lc,weight:4,opacity:.75,dashArray:"6 9",lineCap:"round",interactive:false}).addTo(lg)});
  if(altPath&&altPath.length>1){L.polyline(altPath,{color:"#fff",weight:9,opacity:dark?.2:.65,dashArray:"7 8",lineCap:"round",lineJoin:"round",interactive:false}).addTo(lg);L.polyline(altPath,{color:altColor,weight:4.5,opacity:.98,dashArray:"7 8",lineCap:"round",lineJoin:"round",interactive:false}).addTo(lg)}
  if(!window.DLEG){DLEG=L.control({position:"bottomright"});DLEG.onAdd=function(){return L.DomUtil.create("div","dleg")};DLEG.addTo(map)}
